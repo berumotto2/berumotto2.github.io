@@ -35,3 +35,19 @@ input[type='search'] {
 	font-size: 0.8rem;
 	margin-bottom: 10px;
 }
+
+.box{
+	background-color: rgb(95,150,210);
+	border: 5px solid rgb(60,60,210);
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 20px;
+	font-size: 50px;
+}
+
+.box.active{
+	background-color: rgb(95,150,210);
+}
+
