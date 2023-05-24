@@ -1,39 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css"/>
-    <title>Sound Board</title>
-  </head>
-  <body>
-  
-
-<section>
-		<h1> SQUEEX </h1>
-<div>
-    <audio id="squeex_laughing" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio>
-    <audio id="boo" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio>
-    <audio id="gasp" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio>
-</div>
-</section>
-
-
-<section>
-		<h2> DAN </h2>
 		
-		<div class="row">
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>DG Soundboard Archive</title>
+	<link rel="stylesheet" href="style.css" id="theme" />
+	<script defer src="main.js"></script>
+</head>
+<body>
+
+	<h1>DAN Soundboard</h1>
+
+	<input type='search' placeholder='Search' autofocus>
+	
+	
+	
+<div class="board">
+	<div class="box"><p>1</p>   <audio class="sound" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio></div> 
+</div>	
+	
+	
+<div class="container">
+
+			<div class="row">
+				<div class="text-center"><h1>Squeex</h1></div>
+			</div>
+
+			<div class="row">
+
+				<div class="col-md-4 col-xs-6">
+					<audio preload="auto" id="sound1">
+						<source src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true" type="audio/mpeg">
+					</audio>
+					<button type="button" class="btn btn-lg btn-block" onclick="document.getElementById('sound1').play()">squeex</button>
+				</div>
+			</div>
+			
+			<div class="row">
 				<div class="text-center"><h1>DAN</h1></div>
 			</div>
-		
-    <audio id="tada" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio>
-    <audio id="victory" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio>
-    <audio id="wrong" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio>
 	
-</section>
+				<div class="col-md-4 col-xs-6">
+					<audio preload="auto" id="sound1">
+						<source src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true" type="audio/mpeg">
+					</audio>
+					<button type="button" class="btn btn-lg btn-block" onclick="document.getElementById('sound1').play()">squeex</button>
+				</div>
+			</div>
 
-    <div id="buttons"></div>
-    <script src="Script.js"></script>
-  </body>
+		
+	<div id='list-container'>
+		<div hidden id='template' class='audio-clip'>
+			<div class='label'></div>
+			<audio controls>
+				<source src="" type="">
+			</audio>
+		</div>
+	</div>
+
+
+</body>
 </html>
-
