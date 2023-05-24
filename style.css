@@ -8,6 +8,7 @@ body {
   font-family: "Poppins", sans-serif;
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -35,3 +36,5 @@ body {
 .btn:focus {
     outline: none;
 }
+
+
