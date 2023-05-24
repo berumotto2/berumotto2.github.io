@@ -3,9 +3,16 @@
 }
 
 body {
-	text-align: center;
-	background-color: gray;
-	padding-bottom: 30vh;
+  background-color: rgb(122, 187, 78);
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
 }
 
 input[type='search'] {
