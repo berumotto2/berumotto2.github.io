@@ -11,6 +11,12 @@ body {
   margin: 0;
 }
 
+details {
+	margin-left: 150px;
+	margin-bottom: 16px;
+	margin-top: 16px;
+}
+
 .button {
   background-color: rgb(230, 57, 70);
   border-radius: 5px;
