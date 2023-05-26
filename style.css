@@ -9,9 +9,6 @@ body {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
   height: 100vh;
   overflow: hidden;
   margin: 0;
