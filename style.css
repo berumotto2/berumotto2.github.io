@@ -6,9 +6,6 @@
 body {
   background-color: rgb(73, 80, 87);
   font-family: "Poppins", sans-serif;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
   height: 100vh;
   overflow: hidden;
   margin: 0;
