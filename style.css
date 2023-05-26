@@ -17,7 +17,7 @@ body {
   margin: 0;
 }
 
-.btn {
+.button {
   background-color: rgb(230, 57, 70);
   border-radius: 5px;
   border: none;
@@ -28,12 +28,12 @@ body {
   font-family: inherit;
   cursor: pointer;
 }
-.btn:hover {
+.button:hover {
   opacity: 0.8;
   background-color: #fff;
   color: rgb(25, 52, 73);
 }
-.btn:focus {
+.button:focus {
     outline: none;
 }
 
