@@ -1,70 +1,65 @@
-		
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>DG Soundboard Archive</title>
-	<link rel="stylesheet" href="style.css" id="theme" />
-	<script defer src="main.js"></script>
+  <title>Soundboard with Dropdown Menus</title>
+  <style>
+    .button {
+      display: inline-block;
+      padding: 10px;
+      margin: 10px;
+      background-color: #f1f1f1;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
+  <h1>Soundboard with Dropdown Menus</h1>
 
-	<h1>DAN Soundboard</h1>
+  <label for="category1">Category 1:</label>
+  <select id="category1" onchange="playSound('category1', this.value)">
+    <option value="">Select sound</option>
+    <option value="sound1">Sound 1</option>
+    <option value="sound2">Sound 2</option>
+    <option value="sound3">Sound 3</option>
+  </select>
 
-	<input type='search' placeholder='Search' autofocus>
-	
-	
-	
-<div class="board">
-	<div class="box"><p>1</p>   <audio class="sound" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio></div> 
-</div>	
-	
-	
-<div class="container">
+  <label for="category2">Category 2:</label>
+  <select id="category2" onchange="playSound('category2', this.value)">
+    <option value="">Select sound</option>
+    <option value="sound4">Sound 4</option>
+    <option value="sound5">Sound 5</option>
+    <option value="sound6">Sound 6</option>
+  </select>
 
-			<div class="row">
-				<div class="text-center"><h1>Squeex</h1></div>
-			</div>
+  <label for="category3">Category 3:</label>
+  <select id="category3" onchange="playSound('category3', this.value)">
+    <option value="">Select sound</option>
+    <option value="sound7">Sound 7</option>
+    <option value="sound8">Sound 8</option>
+    <option value="sound9">Sound 9</option>
+  </select>
 
-			<div class="row">
+  <script>
+    function playSound(category, soundId) {
+      var audio = document.getElementById(category + "_" + soundId);
+      audio.play();
+    }
+  </script>
 
-				<div class="col-md-4 col-xs-6">
-					<audio preload="auto" id="squeex_laughing">
-						<source src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true" type="audio/mpeg">
-					</audio>
-					<button type="button" class="btn btn-lg btn-block" onclick="document.getElementById('squeex_laughing').play()">squeex_laughing</button>
-				</div>
-				<div class="col-md-4 col-xs-6">
-					<audio preload="auto" id="nl_clueless">
-						<source src="https://github.com/berumotto2/berumotto2.github.io/blob/main/nl_clueless.mp3?raw=true" type="audio/mpeg">
-					</audio>
-					<button type="button" class="btn btn-lg btn-block" onclick="document.getElementById('nl_clueless').play()">nl_clueless</button>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="text-center"><h1>DAN</h1></div>
-			</div>
-	
-				<div class="col-md-4 col-xs-6">
-					<audio preload="auto" id="sound1">
-						<source src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true" type="audio/mpeg">
-					</audio>
-					<button type="button" class="btn btn-lg btn-block" onclick="document.getElementById('sound1').play()">squeex</button>
-				</div>
-			</div>
+  <audio id="category1_sound1" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio>
+  <audio id="category1_sound2" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/nl_clueless.mp3?raw=true"></audio>
+  <audio id="category1_sound3" src="category1_sound3.mp3"></audio>
 
-		
-	<div id='list-container'>
-		<div hidden id='template' class='audio-clip'>
-			<div class='label'></div>
-			<audio controls>
-				<source src="" type="">
-			</audio>
-		</div>
-	</div>
+  <audio id="category2_sound4" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/nl_clueless.mp3?raw=true"></audio>
+  <audio id="category2_sound5" src="category2_sound5.mp3"></audio>
+  <audio id="category2_sound6" src="category2_sound6.mp3"></audio>
 
-
+  <audio id="category3_sound7" src="category3_sound7.mp3"></audio>
+  <audio id="category3_sound8" src="category3_sound8.mp3"></audio>
+  <audio id="category3_sound9" src="category3_sound9.mp3"></audio>
 </body>
 </html>
