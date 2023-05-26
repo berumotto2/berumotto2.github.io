@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Name Based on Audio File</title>
+  <style>
+    .button {
+      display: inline-block;
+      padding: 10px;
+      margin: 10px;
+      background-color: #f1f1f1;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Name Based on Audio File</h1>
+
+  <button class="button" onclick="playSound('https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true')">Sound 1</button>
+  <button class="button" onclick="playSound('sound2.mp3')">Sound 2</button>
+  <button class="button" onclick="playSound('sound3.mp3')">Sound 3</button>
+
+  <script>
+    function playSound(soundFile) {
+      var audio = new Audio(soundFile);
+      var audioName = soundFile.replace('.mp3', ''); // Remove the file extension
+      var elements = document.getElementsByName(audioName);
+      audio.play();
+      
+      // Do something with the elements that have the same name as the audio file
+      for (var i = 0; i < elements.length; i++) {
+        // Example: Change the background color of the elements
+        elements[i].style.backgroundColor = 'yellow';
+      }
+    }
+  </script>
+  
+  <!-- Example elements with the same name as audio files -->
+  <p name="sound1">Element 1</p>
+  <p name="sound2">Element 2</p>
+  <p name="sound3">Element 3</p>
+</body>
+</html>
