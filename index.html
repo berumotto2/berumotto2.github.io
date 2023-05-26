@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Soundboard with Dropdown Menus</title>
+  <title>Soundboard with Collapsible Sections</title>
   <style>
     .button {
       display: inline-block;
@@ -17,49 +17,50 @@
   </style>
 </head>
 <body>
-  <h1>Soundboard with Dropdown Menus</h1>
+  <h1>Soundboard with Collapsible Sections</h1>
 
-  <label for="category1">Category 1:</label>
-  <select id="category1" onchange="playSound('category1', this.value)">
-    <option value="">Select sound</option>
-    <option value="sound1">Sound 1</option>
-    <option value="sound2">Sound 2</option>
-    <option value="sound3">Sound 3</option>
-  </select>
+  <details>
+    <summary>Category 1</summary>
+    <div>
+      <button class="button" onclick="playSound('sound1')">Sound 1</button>
+      <button class="button" onclick="playSound('sound2')">Sound 2</button>
+      <button class="button" onclick="playSound('sound3')">Sound 3</button>
+    </div>
+  </details>
 
-  <label for="category2">Category 2:</label>
-  <select id="category2" onchange="playSound('category2', this.value)">
-    <option value="">Select sound</option>
-    <option value="sound4">Sound 4</option>
-    <option value="sound5">Sound 5</option>
-    <option value="sound6">Sound 6</option>
-  </select>
+  <details>
+    <summary>Category 2</summary>
+    <div>
+      <button class="button" onclick="playSound('sound4')">Sound 4</button>
+      <button class="button" onclick="playSound('sound5')">Sound 5</button>
+      <button class="button" onclick="playSound('sound6')">Sound 6</button>
+    </div>
+  </details>
 
-  <label for="category3">Category 3:</label>
-  <select id="category3" onchange="playSound('category3', this.value)">
-    <option value="">Select sound</option>
-    <option value="sound7">Sound 7</option>
-    <option value="sound8">Sound 8</option>
-    <option value="sound9">Sound 9</option>
-  </select>
+  <details>
+    <summary>Category 3</summary>
+    <div>
+      <button class="button" onclick="playSound('sound7')">Sound 7</button>
+      <button class="button" onclick="playSound('sound8')">Sound 8</button>
+      <button class="button" onclick="playSound('sound9')">Sound 9</button>
+    </div>
+  </details>
 
   <script>
-    function playSound(category, soundId) {
-      var audio = document.getElementById(category + "_" + soundId);
+    function playSound(soundId) {
+      var audio = document.getElementById(soundId);
       audio.play();
     }
   </script>
 
-  <audio id="category1_sound1" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio>
-  <audio id="category1_sound2" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/nl_clueless.mp3?raw=true"></audio>
-  <audio id="category1_sound3" src="category1_sound3.mp3"></audio>
-
-  <audio id="category2_sound4" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/nl_clueless.mp3?raw=true"></audio>
-  <audio id="category2_sound5" src="category2_sound5.mp3"></audio>
-  <audio id="category2_sound6" src="category2_sound6.mp3"></audio>
-
-  <audio id="category3_sound7" src="category3_sound7.mp3"></audio>
-  <audio id="category3_sound8" src="category3_sound8.mp3"></audio>
-  <audio id="category3_sound9" src="category3_sound9.mp3"></audio>
+  <audio id="sound1" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio>
+  <audio id="sound2" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio>
+  <audio id="sound3" src="sound3.mp3"></audio>
+  <audio id="sound4" src="sound4.mp3"></audio>
+  <audio id="sound5" src="sound5.mp3"></audio>
+  <audio id="sound6" src="sound6.mp3"></audio>
+  <audio id="sound7" src="sound7.mp3"></audio>
+  <audio id="sound8" src="sound8.mp3"></audio>
+  <audio id="sound9" src="sound9.mp3"></audio>
 </body>
 </html>
