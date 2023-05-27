@@ -5,12 +5,16 @@
   box-sizing: border-box;
 }
 
+
+
 body {
-  background-color: #7e7f83;
+  background-color: #444554;
   font-family: "Poppins", sans-serif;
   height: 100vh;
+  min-height: 100vh;
   overflow: scroll;
   margin: 24px;
+  margin-bottom: 10rem;
 }
 
 h1 {
@@ -18,8 +22,9 @@ h1 {
 	text-align: center;
     font-size: 64px;
 	background-color: #e63946;
-	border-radius: 3px;
+	border-radius: 6px;
     border: solid #e8dab2;
+	border-width: 9px;
 	
 }
 
@@ -37,6 +42,7 @@ details {
 summary {
 	font-family: "Poppins", sans-serif;
     font-size: 32px;
+
 }
 
 .button {
@@ -45,9 +51,9 @@ summary {
   border: solid #fcbf49;
   color: #14110f;
   font-weight: bold;
-  margin: 1rem;
-  padding: 1.2rem 2.5rem;
-  font-size: 16px;
+  margin: 0.8rem;
+  padding: 1rem 2.5rem;
+  font-size: 18px;
   font-family: inherit;
   cursor: pointer;
 }
