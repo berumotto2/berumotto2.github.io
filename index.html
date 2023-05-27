@@ -1,109 +1,604 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>DAN SOUNDBOARD</title>
-<link rel="stylesheet" href="style.css" id="theme" />
+  <title>THE DAN GHEESLING SHOW SOUNDBOARD</title>
+  <link rel="stylesheet" href="style.css" id="theme" />
+  <script defer src="main.js"></script>
 </head>
 <body>
-  <h1>DAN SOUNDBOARD</h1>
-
-  <details>
-    <summary>SQUEEX</summary>
-    <div>
-      <button class="button" onclick="playSound('sound1')">Sound 1</button>
-      <button class="button" onclick="playSound('sound2')">Sound 2</button>
-      <button class="button" onclick="playSound('sound3')">Sound 3</button>
-	  <button class="button" onclick="playSound('sound1')">Sound 1</button>
-      <button class="button" onclick="playSound('sound2')">Sound 2</button>
-      <button class="button" onclick="playSound('sound3')">Sound 3</button>
-	  <button class="button" onclick="playSound('sound1')">Sound 1</button>
-      <button class="button" onclick="playSound('sound2')">Sound 2</button>
-      <button class="button" onclick="playSound('sound3')">Sound 3</button>
-	  <button class="button" onclick="playSound('sound1')">Sound 1</button>
-      <button class="button" onclick="playSound('sound2')">Sound 2</button>
-      <button class="button" onclick="playSound('sound3')">Sound 3</button>
-    </div>
-  </details>
-
-  <details>
-    <summary>NL</summary>
-    <div>
-      <button class="button" onclick="playSound('sound4')">Sound 4</button>
-      <button class="button" onclick="playSound('sound5')">Sound 5</button>
-      <button class="button" onclick="playSound('sound6')">Sound 6</button>
-    </div>
-  </details>
-
-  <details>
-    <summary>HOB</summary>
-    <div>
-      <button class="button" onclick="playSound('sound7')">Sound 7</button>
-      <button class="button" onclick="playSound('sound8')">Sound 8</button>
-      <button class="button" onclick="playSound('sound9')">Sound 9</button>
-    </div>
-  </details>
-  
-   <details>
-    <summary>SKIP</summary>
-    <div>
-      <button class="button" onclick="playSound('sound7')">Sound 7</button>
-      <button class="button" onclick="playSound('sound8')">Sound 8</button>
-      <button class="button" onclick="playSound('sound9')">Sound 9</button>
-    </div>
-  </details>
-  
-   <details>
-    <summary>MEMES</summary>
-    <div>
-      <button class="button" onclick="playSound('sound7')">Sound 7</button>
-      <button class="button" onclick="playSound('sound8')">Sound 8</button>
-      <button class="button" onclick="playSound('sound9')">Sound 9</button>
-    </div>
-  </details>
+  <h1>THE DAN GHEESLING SHOW
+  <br> SOUNDBOARD</h1>
   
   <details>
-    <summary>DAN (the one rule of the soundboard) </summary>
-    <div>
-      <button class="button" onclick="playSound('sound7')">Sound 7</button>
-      <button class="button" onclick="playSound('sound8')">Sound 8</button>
-      <button class="button" onclick="playSound('sound9')">Sound 9</button>
-    </div>
-  </details>
-
-  <details>
-    <summary>SPORTS (football mostly KKona) </summary>
-    <div>
-      <button class="button" onclick="playSound('sound7')">Sound 7</button>
-      <button class="button" onclick="playSound('sound8')">Sound 8</button>
-      <button class="button" onclick="playSound('sound9')">Sound 9</button>
-    </div>
-  </details>
-
-  <details>
-    <summary>CELEBRETIES </summary>
-    <div>
-      <button class="button" onclick="playSound('sound7')">Sound 7</button>
-      <button class="button" onclick="playSound('sound8')">Sound 8</button>
-      <button class="button" onclick="playSound('sound9')">Sound 9</button>
-    </div>
-  </details>
-
+    <summary>ADS</summary>
+	
+  <div id="soundboard_ads"></div>
 
   <script>
-    function playSound(soundId) {
-      var audio = document.getElementById(soundId);
-      audio.play();
-    }
-  </script>
 
-  <audio id="sound1" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio>
-  <audio id="sound2" src="https://github.com/berumotto2/berumotto2.github.io/blob/main/squeex_laughing.mp3?raw=true"></audio>
-  <audio id="sound3" src="sound3.mp3"></audio>
-  <audio id="sound4" src="sound4.mp3"></audio>
-  <audio id="sound5" src="sound5.mp3"></audio>
-  <audio id="sound6" src="sound6.mp3"></audio>
-  <audio id="sound7" src="sound7.mp3"></audio>
-  <audio id="sound8" src="sound8.mp3"></audio>
-  <audio id="sound9" src="sound9.mp3"></audio>
+     // MP3 file names and labels
+    var mp3Files_ads = [
+      { name: 'eww_stinkor.mp3', label: 'eww_stinkor' },
+      { name: 'little_debbie_1.mp3', label: 'little_debbie_1' },
+      { name: 'little_debbie_2.mp3', label: 'little_debbie_2' },
+	  { name: 'little_debbie_3.mp3', label: 'little_debbie_3' },
+	  { name: 'cosmic_brownies_share_smile.mp3', label: 'cosmic_brownies_share_smile' },
+	  { name: 'cosmic_brownies_party.mp3', label: 'cosmic_brownies_party' },
+	  { name: 'pick_up_pace.mp3', label: 'pick_up_pace' },
+	  { name: 'this_aint_pace_picante.mp3', label: 'this_aint_pace_picante' }
+    ];
+
+    // Load MP3 files with labels dynamically
+    var soundboardDiv = document.getElementById('soundboard_ads');
+
+    mp3Files_ads.forEach(function(mp3) {
+      var button = document.createElement('button');
+      button.className = 'button';
+      button.textContent = mp3.label;
+      button.addEventListener('click', function() {
+        var audio = new Audio(mp3.name);
+        audio.play();
+      });
+
+      soundboardDiv.appendChild(button);
+    });
+  </script>
+  
+  
+  </details>
+  
+ <details>
+    <summary>APOLLO</summary>
+	
+  <div id="soundboard_apollo"></div>
+
+  <script>
+
+     // MP3 file names and labels
+    var mp3Files_apollo = [
+      { name: 'apollo_awoo.mp3', label: 'apollo_awoo' },
+      { name: 'apollo_bayless.mp3', label: 'apollo_bayless' },
+      { name: 'apollo_hard_case.mp3', label: 'apollo_hard_case' },
+	  { name: 'apollo_hard_right.mp3', label: 'apollo_hard_right' },
+	  { name: 'apollo_holy_bursh.mp3', label: 'apollo_holy_bursh' },
+	  { name: 'apollo_how.mp3', label: 'apollo_how' },
+	  { name: 'apollo_how_2.mp3', label: 'apollo_how_2' },
+	  { name: 'apollo_s_holy_bursh.mp3', label: 'apollo_s_holy_bursh' },
+	  { name: 'apollo_the_dawg.mp3', label: 'apollo_the_dawg' },
+	  { name: 'apollo_youpiece.mp3', label: 'apollo_youpiece' },
+	  { name: 'dont_ignore_me.mp3', label: 'dont_ignore_me' },
+	  { name: 'apollo_caught_lootin_tarkov.mp3', label: 'apollo_caught_lootin_tarkov' },
+	  { name: 'apollo_i_got_him_tarkov.mp3', label: 'apollo_i_got_him_tarkov' }
+	  ];
+
+    // Load MP3 files with labels dynamically
+    var soundboardDiv = document.getElementById('soundboard_apollo');
+
+    mp3Files_apollo.forEach(function(mp3) {
+      var button = document.createElement('button');
+      button.className = 'button';
+      button.textContent = mp3.label;
+      button.addEventListener('click', function() {
+        var audio = new Audio(mp3.name);
+        audio.play();
+      });
+
+      soundboardDiv.appendChild(button);
+    });
+  </script>
+  </details>
+  
+   <details>
+    <summary>CELEBS</summary>
+	
+  <div id="soundboard_celebs"></div>
+
+  <script>
+  
+     // MP3 file names and labels
+    var mp3Files_celebs = [
+      { name: 'amber_dog_bee.mp3', label: 'amber_dog_bee' },
+      { name: 'arnold_stud.mp3', label: 'arnold_stud' },
+      { name: 'bill_oreilly_live.mp3', label: 'bill_oreilly_live' },
+	  { name: 'bush_watch_this_drive.mp3', label: 'bush_watch_this_drive' },
+	  { name: 'carole_baskin_coolcat.mp3', label: 'carole_baskin_coolcat' },
+	  { name: 'devito_started_blastin.mp3', label: 'devito_started_blastin' },
+	  { name: 'iggy_azalea_cup.mp3', label: 'iggy_azalea_cup' },
+	  { name: 'jarule_not_fraud_fyre.mp3', label: 'jarule_not_fraud_fyre' },
+	  { name: 'jerry_lucky_day.mp3', label: 'jerry_lucky_day' },
+	  { name: 'john_cena_caught_and_compromised_permanent_end.mp3', label: 'john_cena_caught_and_compromised_permanent_end' },
+	  { name: 'john_from_tennesee_sway.mp3', label: 'john_from_tennesee_sway' },
+      { name: 'kehuyquan_oscar.mp3', label: 'kehuyquan_oscar' },
+      { name: 'ky_advice.mp3', label: 'ky_advice' },
+	  { name: 'seinfield_kesha_no_thanks.mp3', label: 'seinfield_kesha_no_thanks' },
+	  { name: 'seagal_blood_bank.mp3', label: 'seagal_blood_bank' },
+	  { name: 'snoop_dogg_who.mp3', label: 'snoop_dogg_who' },
+	  { name: 'tarantino_so_much_fun_jan.mp3', label: 'tarantino_so_much_fun_jan' },
+	  { name: 'NdGT_probability_due.mp3', label: 'NdGT_probability_due' }
+	  ];
+
+    // Load MP3 files with labels dynamically
+    var soundboardDiv = document.getElementById('soundboard_celebs');
+
+    mp3Files_celebs.forEach(function(mp3) {
+      var button = document.createElement('button');
+      button.className = 'button';
+      button.textContent = mp3.label;
+      button.addEventListener('click', function() {
+        var audio = new Audio(mp3.name);
+        audio.play();
+      });
+
+      soundboardDiv.appendChild(button);
+    });
+  </script>
+  </details>
+  
+  
+ 
+   <details>
+    <summary>COBALT</summary>
+	
+  <div id="soundboard_cobalt"></div>
+
+  <script>
+  
+     // MP3 file names and labels
+    var mp3Files_cobalt = [
+      { name: 'cobal_got_up_in.mp3', label: 'cobal_got_up_in' },
+      { name: 'cobalt_alive.mp3', label: 'cobalt_alive' },
+      { name: 'cobalt_all_in.mp3', label: 'cobalt_all_in' },
+	  { name: 'cobalt_approuves.mp3', label: 'cobalt_approuves' },
+	  { name: 'cobalt_come_on.mp3', label: 'cobalt_come_on' },
+	  { name: 'cobalt_doubters_slurping.mp3', label: 'cobalt_doubters_slurping' },
+	  { name: 'cobalt_focus_more.mp3', label: 'cobalt_focus_more' },
+	  { name: 'cobalt_goodies.mp3', label: 'cobalt_goodies' },
+	  { name: 'cobalt_i_am.mp3', label: 'cobalt_i_am' },
+	  { name: 'cobalt_kali.mp3', label: 'cobalt_kali' },
+	  { name: 'cobalt_kreygasm.mp3', label: 'cobalt_kreygasm' },
+	  { name: 'cobalt_mistakes.mp3', label: 'cobalt_mistakes' },
+      { name: 'cobalt_nokia1.mp3', label: 'cobalt_nokia1' },
+      { name: 'cobalt_nokia2.mp3', label: 'cobalt_nokia2' },
+	  { name: 'cobalt_pleasy.mp3', label: 'cobalt_pleasy' },
+	  { name: 'cobalt_stop.mp3', label: 'cobalt_stop' },
+	  { name: 'cobalt_whatdoyoumean.mp3', label: 'cobalt_whatdoyoumean' }
+	  ];
+
+    // Load MP3 files with labels dynamically
+    var soundboardDiv = document.getElementById('soundboard_cobalt');
+
+    mp3Files_cobalt.forEach(function(mp3) {
+      var button = document.createElement('button');
+      button.className = 'button';
+      button.textContent = mp3.label;
+      button.addEventListener('click', function() {
+        var audio = new Audio(mp3.name);
+        audio.play();
+      });
+
+      soundboardDiv.appendChild(button);
+    });
+  </script>
+  </details>
+  
+  
+     <details>
+    <summary>DAN (the one rule of the sound board)</summary>
+	
+  <div id="soundboard_dan"></div>
+
+  <script>
+  
+     // MP3 file names and labels
+    var mp3Files_dan = [
+      { name: 'dan_gold_pine_resin.mp3', label: 'dan_gold_pine_resin' },
+      { name: 'dropped_him.mp3', label: 'dropped_him' },
+	  { name: 'yu_vs_the_yu.mp3', label: 'yu_vs_the_yu' }
+	  ];
+
+    // Load MP3 files with labels dynamically
+    var soundboardDiv = document.getElementById('soundboard_dan');
+
+    mp3Files_dan.forEach(function(mp3) {
+      var button = document.createElement('button');
+      button.className = 'button';
+      button.textContent = mp3.label;
+      button.addEventListener('click', function() {
+        var audio = new Audio(mp3.name);
+        audio.play();
+      });
+
+      soundboardDiv.appendChild(button);
+    });
+  </script>
+  </details>
+  
+  
+     <details>
+    <summary>FLIGHT REACTS (lower your volume before playing)</summary>
+	
+  <div id="soundboard_flight"></div>
+
+  <script>
+  
+     // MP3 file names and labels
+    var mp3Files_flight = [
+      { name: 'flight_2and0tonight.mp3', label: 'flight_2and0tonight' },
+      { name: 'flight_broke_boi.mp3', label: 'flight_broke_boi' },
+      { name: 'flight_i_was_there.mp3', label: 'flight_i_was_there' },
+	  { name: 'flight_i_was_there2.mp3', label: 'flight_i_was_there2' },
+	  { name: 'flight_i_was_there3.mp3', label: 'flight_i_was_there3' },
+	  { name: 'flight_inspirational.mp3', label: 'flight_inspirational' },
+	  { name: 'flight_last_one.mp3', label: 'flight_last_one' },
+	  { name: 'flight_noooo.mp3', label: 'flight_noooo' },
+	  { name: 'flight_one_more.mp3', label: 'flight_one_more' },
+	  { name: 'flight_save_pain.mp3', label: 'flight_save_pain' },
+	  { name: 'flight_serious.mp3', label: 'flight_serious' },
+	  { name: 'flight_this_dude_is_a_sweat.mp3', label: 'flight_this_dude_is_a_sweat' },
+      { name: 'flight_this_is_the_one.mp3', label: 'flight_this_is_the_one' },
+      { name: 'flight_touchdown.mp3', label: 'flight_touchdown' },
+	  { name: 'flight_who_is_this.mp3', label: 'flight_who_is_this' },
+	  { name: 'flight_why.mp3', label: 'flight_why' },
+	  { name: 'flight_why2.mp3', label: 'flight_why2' },
+	  { name: 'flight_woah_hey_hey.mp3', label: 'flight_woah_hey_hey' },
+	  { name: 'flight_who_is_this.mp3', label: 'flight_who_is_this' },
+	  { name: 'flightreacts_irish_spring_unhinged0.mp3', label: 'flightreacts_irish_spring_unhinged0' },
+	  { name: 'flightreacts_irish_spring_unhingedMAX.mp3', label: 'flightreacts_irish_spring_unhingedMAX' },
+	  { name: 'flight_come_on_bro.mp3', label: 'flight_come_on_bro' },
+	  { name: 'flight_stop_it.mp3', label: 'flight_stop_it' },
+	  { name: 'flightreacts_look_at_curry_demon_mode.mp3', label: 'flightreacts_look_at_curry_demon_mode' },
+	  { name: 'flight_video_ends.mp3', label: 'flight_video_ends' }
+	  ];
+
+    // Load MP3 files with labels dynamically
+    var soundboardDiv = document.getElementById('soundboard_flight');
+
+    mp3Files_flight.forEach(function(mp3) {
+      var button = document.createElement('button');
+      button.className = 'button';
+      button.textContent = mp3.label;
+      button.addEventListener('click', function() {
+        var audio = new Audio(mp3.name);
+        audio.play();
+      });
+
+      soundboardDiv.appendChild(button);
+    });
+  </script>
+  </details>
+  
+  
+  
+     <details>
+    <summary>GAMING</summary>
+	
+  <div id="soundboard_gaming"></div>
+
+  <script>
+  
+     // MP3 file names and labels
+    var mp3Files_gaming = [
+      { name: 'chaos.mp3', label: 'chaos' },
+      { name: 'chicken_tender_clutch.mp3', label: 'chicken_tender_clutch' },
+      { name: 'corneria_dabadaba.mp3', label: 'corneria_dabadaba' },
+	  { name: 'cuphead_wilhem.mp3', label: 'cuphead_wilhem' },
+	  { name: 'des_maiden_demon.mp3', label: 'des_maiden_demon' },
+	  { name: 'des_maiden_done.mp3', label: 'des_maiden_done' },
+	  { name: 'des_maiden_mended.mp3', label: 'des_maiden_mended' },
+	  { name: 'ebf_fun_waiting.mp3', label: 'ebf_fun_waiting' },
+	  { name: 'ebf_fun_waiting_spedup.mp3', label: 'ebf_fun_waiting_spedup' },
+	  { name: 'ebf_waiting.mp3', label: 'ebf_waiting' },
+	  { name: 'eddie_cheating.mp3', label: 'eddie_cheating' },
+	  { name: 'elden_ring_honey_rays.mp3', label: 'elden_ring_honey_rays' },
+      { name: 'endless_boss_fight.mp3', label: 'endless_boss_fight' },
+      { name: 'er_morgot_piece.mp3', label: 'er_morgot_piece' },
+	  { name: 'isaac_dad.mp3', label: 'isaac_dad' },
+	  { name: 'happy_feet.mp3', label: 'happy_feet' },
+	  { name: 'madden_kaus_crazy_dude.mp3', label: 'madden_kaus_crazy_dude' },
+	  { name: 'madden_kaus_omg.mp3', label: 'madden_kaus_omg' },
+	  { name: 'madden_kaus_omg_stop.mp3', label: 'madden_kaus_omg_stop' },
+	  { name: 'madden_kaus_stop_cheating_me.mp3', label: 'madden_kaus_stop_cheating_me' },
+	  { name: 'melania.mp3', label: 'melania' },
+	  { name: 'oh_my_gosh.mp3', label: 'oh_my_gosh' },
+	  { name: 'one_egg_hand_peas.mp3', label: 'one_egg_hand_peas' },
+      { name: 'orionhart_poppinggamers.mp3', label: 'orionhart_poppinggamers' },
+      { name: 'ruslter.mp3', label: 'ruslter' },
+	  { name: 'ruslter2.mp3', label: 'ruslter2' },
+	  { name: 'rustler3.mp3', label: 'rustler3' },
+	  { name: 'ryu_1.mp3', label: 'ryu_1' },
+	  { name: 'ryu_2.mp3', label: 'ryu_2' },
+	  { name: 'ryu_3.mp3', label: 'ryu_3' },
+	  { name: 'shinyponyta.mp3', label: 'shinyponyta' },
+	  { name: 'shinyponyta_dedication.mp3', label: 'shinyponyta_dedication' },
+	  { name: 'shinyponyta_never_give_up.mp3', label: 'shinyponyta_never_give_up' },
+      { name: 'shinyponyta_never_give_up_nomusic.mp3', label: 'shinyponyta_never_give_up_nomusic' },
+      { name: 'shinyponyta_there_it_is.mp3', label: 'shinyponyta_there_it_is' },
+	  { name: 'ruslter2.mp3', label: 'ruslter2' },
+	  { name: 'rustler3.mp3', label: 'rustler3' },
+	  { name: 'starfox_coms.mp3', label: 'starfox_coms' },
+	  { name: 'starfox_coms2.mp3', label: 'starfox_coms2' },
+	  { name: 'starfox_dabadaba.mp3', label: 'starfox_dabadaba' },
+	  { name: 'street_7_99_censored.mp3', label: 'street_7_99_censored' },
+	  { name: 'street_7_99_with_F.mp3', label: 'street_7_99_with_F' },
+	  { name: 'wii_nice_throw.mp3', label: 'wii_nice_throw' },
+	  { name: 'wii_nice_throw2.mp3', label: 'wii_nice_throw2' },
+      { name: 'ryan_lockwood_pace.mp3', label: 'ryan_lockwood_pace' },
+      { name: 'ryan_lockwood_perfect_line.mp3', label: 'ryan_lockwood_perfect_line' },
+	  { name: 'oooh_elden_ring.mp3', label: 'oooh_elden_ring' },
+	  { name: 'dad_clerc_fista.mp3', label: 'dad_clerc_fista' },
+	  { name: 'cuphead.mp3', label: 'cuphead' }
+	  ];
+
+    // Load MP3 files with labels dynamically
+    var soundboardDiv = document.getElementById('soundboard_gaming');
+
+    mp3Files_gaming.forEach(function(mp3) {
+      var button = document.createElement('button');
+      button.className = 'button';
+      button.textContent = mp3.label;
+      button.addEventListener('click', function() {
+        var audio = new Audio(mp3.name);
+        audio.play();
+      });
+
+      soundboardDiv.appendChild(button);
+    });
+  </script>
+  </details>
+  
+  
+   <details>
+    <summary>HOB</summary>
+	
+  <div id="soundboard_hob"></div>
+
+  <script>
+  
+     // MP3 file names and labels
+    var mp3Files_hob = [
+      { name: 'HH_are_you_kidding_me.mp3', label: 'HH_are_you_kidding_me' },
+      { name: 'HH_are_you_kidding_me_full.mp3', label: 'HH_are_you_kidding_me_full' },
+      { name: 'HH_ban_everyone.mp3', label: 'HH_ban_everyone' },
+	  { name: 'HH_noooo_loud.mp3', label: 'HH_noooo_loud' },
+	  { name: 'HH_oh_youre_getting_banned.mp3', label: 'HH_oh_youre_getting_banned' },
+	  { name: 'hh_welcome_to_the_stream.mp3', label: 'hh_welcome_to_the_stream' },
+	  { name: 'hh_youtube_jump.mp3', label: 'hh_youtube_jump' },
+	  { name: 'hob_advice_parry.mp3', label: 'hob_advice_parry' },
+	  { name: 'hob_ayaya.mp3', label: 'hob_ayaya' },
+	  { name: 'hob_bm.mp3', label: 'hob_bm' },
+	  { name: 'hob_bmbmbm.mp3', label: 'hob_bmbmbm' },
+	  { name: 'hob_cant.mp3', label: 'hob_cant' },
+      { name: 'hob_COAC.mp3', label: 'hob_COAC' },
+      { name: 'hob_copium.mp3', label: 'hob_copium' },
+	  { name: 'hob_copium2.mp3', label: 'hob_copium2' },
+	  { name: 'hob_dae.mp3', label: 'hob_dae' },
+	  { name: 'hob_demon_inside.mp3', label: 'hob_demon_inside' },
+	  { name: 'hob_dial_in.mp3', label: 'hob_dial_in' },
+	  { name: 'hob_dude_how.mp3', label: 'hob_dude_how' },
+	  { name: 'hob_elden_ring.mp3', label: 'hob_elden_ring' },
+	  { name: 'hob_er_no_hit.mp3', label: 'hob_er_no_hit' },
+	  { name: 'hob_followed.mp3', label: 'hob_followed' },
+	  { name: 'hob_he_doesnt_know.mp3', label: 'hob_he_doesnt_know' },
+      { name: 'hob_holee.mp3', label: 'hob_holee' },
+      { name: 'hob_how.mp3', label: 'hob_how' },
+	  { name: 'hob_icant.mp3', label: 'hob_icant' },
+	  { name: 'hob_jump.mp3', label: 'hob_jump' },
+	  { name: 'hob_keep_it_clean.mp3', label: 'hob_keep_it_clean' },
+	  { name: 'hob_kekw.mp3', label: 'hob_kekw' },
+	  { name: 'hob_kekws.mp3', label: 'hob_kekws' },
+	  { name: 'hob_kiddin_me_dude.mp3', label: 'hob_kiddin_me_dude' },
+	  { name: 'hob_kkona.mp3', label: 'hob_kkona' },
+      { name: 'hob_L_good_day.mp3', label: 'hob_L_good_day' },
+      { name: 'hob_letsgo_loud.mp3', label: 'hob_letsgo_loud' },
+	  { name: 'hob_living_room.mp3', label: 'hob_living_room' },
+	  { name: 'hob_message_wallet.mp3', label: 'hob_message_wallet' },
+	  { name: 'hob_nawtt_looting.mp3', label: 'hob_nawtt_looting' },
+	  { name: 'hob_no_copium.mp3', label: 'hob_no_copium' },
+	  { name: 'hob_no_more_stalling.mp3', label: 'hob_no_more_stalling' },
+	  { name: 'hob_no_swearing.mp3', label: 'hob_no_swearing' },
+	  { name: 'hob_not_looting.mp3', label: 'hob_not_looting' },
+	  { name: 'hob_not_possible.mp3', label: 'hob_not_possible' },
+	  { name: 'hob_oneguy.mp3', label: 'hob_oneguy' },
+	  { name: 'hob_oneguy2.mp3', label: 'hob_oneguy2' },
+	  { name: 'hob_pb.mp3', label: 'hob_pb' },
+      { name: 'hob_peepoG.mp3', label: 'hob_peepoG' },
+      { name: 'hob_pellek_copium_delight2.mp3', label: 'hob_pellek_copium_delight2' },
+	  { name: 'hob_pellek_copium_delight3.mp3', label: 'hob_pellek_copium_delight3' },
+	  { name: 'hob_pellek_copiuum_delight1.mp3', label: 'hob_pellek_copiuum_delight1' },
+	  { name: 'hob_smash.mp3', label: 'hob_smash' },
+	  { name: 'hob_stop_stall.mp3', label: 'hob_stop_stall' },
+	  { name: 'hob_thats_all_for_tonight.mp3', label: 'hob_thats_all_for_tonight' },
+	  { name: 'hob_uwu.mp3', label: 'hob_uwu' },
+	  { name: 'hob_what.mp3', label: 'hob_what' },
+	  { name: 'hob_wolfscringe.mp3', label: 'hob_wolfscringe' },
+	  
+	  { name: 'hob_damn_banned.mp3', label: 'hob_damn_banned' },
+	  { name: 'hob_dan.mp3', label: 'hob_dan' },
+	  { name: 'hob_dan_dan_dan.mp3', label: 'hob_dan_dan_dan' },
+	  { name: 'hob_elden_ring_lore.mp3', label: 'hob_elden_ring_lore' },
+	  { name: 'hob_er_truth.mp3', label: 'hob_er_truth' },
+	  { name: 'hob_nice1.mp3', label: 'hob_nice1' },
+	  { name: 'hob_nice2.mp3', label: 'hob_nice2' },
+	  { name: 'hob_nice3.mp3', label: 'hob_nice3' },
+      { name: 'hob_nice4_pausechamp.mp3', label: 'hob_nice4_pausechamp' },
+      { name: 'hob_nice5.mp3', label: 'hob_nice5' },
+	  { name: 'hob_no.mp3', label: 'hob_no' },
+	  { name: 'hob_nonono.mp3', label: 'hob_nonono' },
+	  { name: 'hob_not_asked_for.mp3', label: 'hob_not_asked_for' },
+	  { name: 'hob_permanent_ban.mp3', label: 'hob_permanent_ban' },
+	  { name: 'hob_shout_out.mp3', label: 'hob_shout_out' },
+	  { name: 'hob_what_is_going_on.mp3', label: 'hob_what_is_going_on' },
+	  { name: 'hob_you_piece.mp3', label: 'hob_you_piece' },
+	  { name: 'dghob.mp3', label: 'dghob' }
+	  
+	  ];
+
+    // Load MP3 files with labels dynamically
+    var soundboardDiv = document.getElementById('soundboard_hob');
+
+    mp3Files_hob.forEach(function(mp3) {
+      var button = document.createElement('button');
+      button.className = 'button';
+      button.textContent = mp3.label;
+      button.addEventListener('click', function() {
+        var audio = new Audio(mp3.name);
+        audio.play();
+      });
+
+      soundboardDiv.appendChild(button);
+    });
+  </script>
+  </details>
+  
+  
+  
+  
+    
+   <details>
+    <summary>MALF</summary>
+	
+  <div id="soundboard_malf"></div>
+
+  <script>
+  
+     // MP3 file names and labels
+    var mp3Files_malf = [
+      { name: 'malf_asmr.mp3', label: 'malf_asmr' },
+      { name: 'malf_clutch.mp3', label: 'malf_clutch' },
+      { name: 'malf_copium.mp3', label: 'malf_copium' },
+	  { name: 'malf_derek.mp3', label: 'malf_derek' },
+	  { name: 'malf_derek1.mp3', label: 'malf_derek1' },
+	  { name: 'malf_fired.mp3', label: 'malf_fired' },
+	  { name: 'malf_hgggn.mp3', label: 'malf_hgggn' },
+	  { name: 'malf_holy.mp3', label: 'malf_holy' },
+	  { name: 'malf_irishspring.mp3', label: 'malf_irishspring' },
+	  { name: 'malf_kidding_me.mp3', label: 'malf_kidding_me' },
+	  { name: 'malf_kreygasm2.mp3', label: 'malf_kreygasm2' },
+	  { name: 'malf_kreygasm3.mp3', label: 'malf_kreygasm3' },
+      { name: 'malf_mommy.mp3', label: 'malf_mommy' },
+      { name: 'malf_noise2.mp3', label: 'malf_noise2' },
+	  { name: 'malf_noise3.mp3', label: 'malf_noise3' },
+	  { name: 'malf_noise4.mp3', label: 'malf_noise4' },
+	  { name: 'malf_wish.mp3', label: 'malf_wish' },
+	  { name: 'malf_woohoo.mp3', label: 'malf_woohoo' },
+	  { name: 'malf_you_piece.mp3', label: 'malf_you_piece' },
+	  { name: 'malfGulp.mp3', label: 'malfGulp' }
+	  
+	  ];
+
+    // Load MP3 files with labels dynamically
+    var soundboardDiv = document.getElementById('soundboard_malf');
+
+    mp3Files_malf.forEach(function(mp3) {
+      var button = document.createElement('button');
+      button.className = 'button';
+      button.textContent = mp3.label;
+      button.addEventListener('click', function() {
+        var audio = new Audio(mp3.name);
+        audio.play();
+      });
+
+      soundboardDiv.appendChild(button);
+    });
+  </script>
+  </details>
+  
+  
+  
+     <details>
+    <summary>MOVIES</summary>
+	
+  <div id="soundboard_movies"></div>
+
+  <script>
+  
+     // MP3 file names and labels
+    var mp3Files_movies = [
+      { name: 'dexter_nooo.mp3', label: 'dexter_nooo' },
+      { name: 'dexter_this_is_good.mp3', label: 'dexter_this_is_good' },
+      { name: 'dexterslaboratory_dae.mp3', label: 'dexterslaboratory_dae' },
+	  { name: 'dexters-laboratory_dae1.mp3', label: 'dexters-laboratory_dae1' },
+	  { name: 'dwight_michael.mp3', label: 'dwight_michael' },
+	  { name: 'elmo_rocko1.mp3', label: 'elmo_rocko1' },
+	  { name: 'elmo_rocko2.mp3', label: 'elmo_rocko2' },
+	  { name: 'elmo_rocko3.mp3', label: 'elmo_rocko3' },
+	  { name: 'failure_communicate.mp3', label: 'failure_communicate' },
+	  { name: 'fargo_other_guy.mp3', label: 'fargo_other_guy' },
+	  { name: 'few_good_men_stalling.mp3', label: 'few_good_men_stalling' },
+      { name: 'gethepapers.mp3', label: 'gethepapers' },
+      { name: 'girlsmeetworld_minkus.mp3', label: 'girlsmeetworld_minkus' },
+	  { name: 'girlsmeetworld_name.mp3', label: 'girlsmeetworld_name' },
+	  { name: 'got_tell_cersei.mp3', label: 'got_tell_cersei' },
+	  { name: 'home_alone_sickening.mp3', label: 'home_alone_sickening' },
+	  { name: 'homealone_dangly_ones.mp3', label: 'homealone_dangly_ones' },
+	  { name: 'jim_and_dwight_michael.mp3', label: 'jim_and_dwight_michael' },
+	  { name: 'JN_dont_laugh.mp3', label: 'JN_dont_laugh' },
+	  { name: 'JN_truth.mp3', label: 'JN_truth' },
+	  { name: 'joe_pesci_degenerate_gambler.mp3', label: 'joe_pesci_degenerate_gambler' },
+	  { name: 'joe_pesci_funny_how.mp3', label: 'joe_pesci_funny_how' },
+      { name: 'joe_pesci_funny_how2.mp3', label: 'joe_pesci_funny_how2' },
+      { name: 'joepesci_piece.mp3', label: 'joepesci_piece' },
+	  { name: 'john_locke_dont_tell_me_what_i_cant_do.mp3', label: 'john_locke_dont_tell_me_what_i_cant_do' },
+	  { name: 'keyser_soze.mp3', label: 'keyser_soze' },
+	  { name: 'mrsalt_stuff_nonsense.mp3', label: 'mrsalt_stuff_nonsense' },
+	  { name: 'nickcage_stalling.mp3', label: 'nickcage_stalling' },
+	  { name: 'office space_my_stapler.mp3', label: 'office space_my_stapler' },
+      { name: 'pam_stop_stalling.mp3', label: 'pam_stop_stalling' },
+      { name: 'rounders_pay_mahny.mp3', label: 'rounders_pay_mahny' },
+	  { name: 'usualsuspects_leash.mp3', label: 'usualsuspects_leash' },
+	  { name: 'wonka_won.mp3', label: 'wonka_won' },
+	  { name: 'wonka_won2.mp3', label: 'wonka_won2' }
+	  
+	  ];
+
+    // Load MP3 files with labels dynamically
+    var soundboardDiv = document.getElementById('soundboard_movies');
+
+    mp3Files_movies.forEach(function(mp3) {
+      var button = document.createElement('button');
+      button.className = 'button';
+      button.textContent = mp3.label;
+      button.addEventListener('click', function() {
+        var audio = new Audio(mp3.name);
+        audio.play();
+      });
+
+      soundboardDiv.appendChild(button);
+    });
+  </script>
+  </details>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </body>
 </html>
+

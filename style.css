@@ -3,22 +3,28 @@
 * {
   box-sizing: border-box;
 }
+
 body {
   background-color: #7e7f83;
   font-family: "Poppins", sans-serif;
   height: 100vh;
-  overflow: hidden;
-  margin: 0;
+  overflow: scroll;
+  margin: 24px;
 }
 
 h1 {
 	color: #14110f;
 	text-align: center;
     font-size: 64px;
+	background-color: #e63946;
+	border-radius: 3px;
+    border: solid #e8dab2;
+	
 }
 
 details {
 	color: #14110f;
+	background-color: #d3d3d3;
 	margin-left: 150px;
 	margin-bottom: 16px;
 	margin-top: 16px;
@@ -31,12 +37,12 @@ summary {
 }
 
 .button {
-  background-color: rgb(230, 57, 70);
-  border-radius: 5px;
-  border: none;
+  background-color: #e63946;
+  border-radius: 3px;
+  border: solid #e8dab2;
   color: #e8dab2;
   margin: 1rem;
-  padding: 1.5rem 3rem;
+  padding: 1.2rem 2.5rem;
   font-size: 16px;
   font-family: inherit;
   cursor: pointer;
