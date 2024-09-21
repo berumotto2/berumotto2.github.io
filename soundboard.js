@@ -36,7 +36,7 @@ function playSound(url) {
 }
 
 async function fetchGitHubDirectory(path) {
-  const apiUrl = `https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/contents/${path}`;
+  const apiUrl = `https://api.github.com/repos/berumotto2/berumotto2.github.io/contents/${path}`;
   const response = await fetch(apiUrl);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
