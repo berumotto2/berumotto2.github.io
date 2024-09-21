@@ -58,10 +58,57 @@
         .download-button:hover {
             background-color: #45a049;
         }
+        #nav-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        #nav-menu ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        #nav-menu li {
+            margin-bottom: 5px;
+        }
+        #nav-menu a {
+            text-decoration: none;
+            color: #333;
+        }
+        #nav-menu a:hover {
+            text-decoration: underline;
+        }
+        #menu-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1001;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1>THE DAN GHEESLING SHOW SOUNDBOARD</h1>
+
+    <button id="menu-toggle">Menu</button>
+
+    <nav id="nav-menu" style="display: none;">
+        <ul id="section-list">
+            <!-- Section links will be dynamically inserted here -->
+        </ul>
+    </nav>
 
     <div id="soundboard-container">
         <!-- Soundboard sections will be dynamically inserted here -->
@@ -69,11 +116,12 @@
 
     <script>
         const sections = [
-        {name: "ADS", folder: "ads"},
+            {name: "ADS", folder: "ads"},
             {name: "APOLLO", folder: "apollo"},
             {name: "CELEBS", folder: "celebs"},
             {name: "COBALT", folder: "cobalt"},
             {name: "DAN", folder: "dan", note: "(the one rule of the sound board)"},
+            {name: "DR U", folder: "dr_u"},
             {name: "FLIGHT REACTS", folder: "flight_reacts", note: "(lower your volume before playing)"},
             {name: "GAMING", folder: "gaming"},
             {name: "HOB", folder: "hob"},
@@ -94,13 +142,13 @@
         ];
 
         const container = document.getElementById('soundboard-container');
+        const sectionList = document.getElementById('section-list');
 
         // Function to create sound item (button, player, and download)
         function createSoundItem(sectionId, soundName, filePath) {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'sound-item';
 
-            // Create play button
             const button = document.createElement('button');
             button.className = 'sound-button';
             button.textContent = soundName;
@@ -115,7 +163,6 @@
             };
             itemDiv.appendChild(button);
 
-            // Create audio player
             const playerControls = document.createElement('div');
             playerControls.className = 'player-controls';
             const audio = document.createElement('audio');
@@ -123,7 +170,6 @@
             audio.src = filePath;
             playerControls.appendChild(audio);
 
-            // Create download button
             const downloadButton = document.createElement('a');
             downloadButton.className = 'download-button';
             downloadButton.textContent = 'Download';
@@ -157,16 +203,32 @@
             }
         }
 
-        // Create sections and load sounds
+        // Create sections, load sounds, and populate navigation menu
         sections.forEach(section => {
             const div = document.createElement('div');
             div.className = 'soundboard-section';
+            div.id = `section_${section.folder}`;
             div.innerHTML = `
                 <h2>${section.name}${section.note ? ' ' + section.note : ''}</h2>
                 <div id="soundboard_${section.folder}"></div>
             `;
             container.appendChild(div);
             loadSoundsForSection(section);
+
+            // Add section to navigation menu
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `#section_${section.folder}`;
+            a.textContent = section.name;
+            li.appendChild(a);
+            sectionList.appendChild(li);
+        });
+
+        // Toggle menu visibility
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        menuToggle.addEventListener('click', () => {
+            navMenu.style.display = navMenu.style.display === 'none' ? 'block' : 'none';
         });
     </script>
 </body>
