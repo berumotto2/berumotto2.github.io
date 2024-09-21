@@ -22,13 +22,8 @@
             padding: 10px;
             margin-bottom: 20px;
         }
-        .sound-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
         .sound-button {
-            margin-right: 10px;
+            margin: 5px;
             padding: 10px;
             background-color: #f0f0f0;
             border: none;
@@ -37,26 +32,6 @@
         }
         .sound-button:hover {
             background-color: #e0e0e0;
-        }
-        .player-controls {
-            display: flex;
-            align-items: center;
-        }
-        .player-controls audio {
-            height: 30px;
-            margin-right: 10px;
-        }
-        .download-button {
-            padding: 5px 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .download-button:hover {
-            background-color: #45a049;
         }
     </style>
 </head>
@@ -69,49 +44,45 @@
 
     <script>
         const sections = [
-        {name: "ADS", folder: "ads"}
+            {name: "ADS", folder: "ads"},
+            {name: "APOLLO", folder: "apollo"},
+            {name: "CELEBS", folder: "celebs"},
+            {name: "COBALT", folder: "cobalt"},
+            {name: "DAN", folder: "dan", note: "(the one rule of the sound board)"},
+            {name: "FLIGHT REACTS", folder: "flight_reacts", note: "(lower your volume before playing)"},
+            {name: "GAMING", folder: "gaming"},
+            {name: "HOB", folder: "hob"},
+            {name: "MALF", folder: "malf"},
+            {name: "MOVIES", folder: "movies"},
+            {name: "MUSIC", folder: "music"},
+            {name: "NL - Ryan Gary", folder: "nl_ryan_gary"},
+            {name: "MISC NOISES", folder: "misc_noises"},
+            {name: "SKIP BAYLESS", folder: "skip_bayless"},
+            {name: "SPORTS", folder: "sports", note: "(mostly football KKona)"},
+            {name: "SQUEEX", folder: "squeex"},
+            {name: "STREAMERS", folder: "streamers"},
+            {name: "TCG", folder: "tcg"},
+            {name: "TIK TOK & VINES", folder: "tiktok_vines"},
+            {name: "TV", folder: "tv"},
+            {name: "WWE", folder: "wwe"},
+            {name: "YOUTUBE", folder: "youtube"}
         ];
 
         const container = document.getElementById('soundboard-container');
 
-        // Function to create sound item (button, player, and download)
-        function createSoundItem(sectionId, soundName, filePath) {
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'sound-item';
-
-            // Create play button
+        // Function to create sound buttons
+        function createSoundButton(sectionId, soundName, filePath) {
             const button = document.createElement('button');
             button.className = 'sound-button';
             button.textContent = soundName;
-            button.onclick = () => {
-                const audio = itemDiv.querySelector('audio');
-                if (audio.paused) {
-                    audio.play();
-                } else {
-                    audio.pause();
-                    audio.currentTime = 0;
-                }
-            };
-            itemDiv.appendChild(button);
+            button.onclick = () => playSound(filePath);
+            document.getElementById(sectionId).appendChild(button);
+        }
 
-            // Create audio player
-            const playerControls = document.createElement('div');
-            playerControls.className = 'player-controls';
-            const audio = document.createElement('audio');
-            audio.controls = true;
-            audio.src = filePath;
-            playerControls.appendChild(audio);
-
-            // Create download button
-            const downloadButton = document.createElement('a');
-            downloadButton.className = 'download-button';
-            downloadButton.textContent = 'Download';
-            downloadButton.href = filePath;
-            downloadButton.download = soundName + '.mp3';
-            playerControls.appendChild(downloadButton);
-
-            itemDiv.appendChild(playerControls);
-            document.getElementById(sectionId).appendChild(itemDiv);
+        // Function to play sound
+        function playSound(filePath) {
+            const audio = new Audio(filePath);
+            audio.play();
         }
 
         // Function to load sounds for a section
@@ -125,7 +96,7 @@
                 files.forEach(file => {
                     if (file.name.toLowerCase().endsWith('.mp3')) {
                         const soundName = file.name.replace('.mp3', '').replace(/_/g, ' ');
-                        createSoundItem(sectionId, soundName, file.download_url);
+                        createSoundButton(sectionId, soundName, file.download_url);
                     }
                 });
             } catch (error) {
