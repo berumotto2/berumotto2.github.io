@@ -22,8 +22,13 @@
             padding: 10px;
             margin-bottom: 20px;
         }
+        .sound-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
         .sound-button {
-            margin: 5px;
+            margin-right: 10px;
             padding: 10px;
             background-color: #f0f0f0;
             border: none;
@@ -32,6 +37,26 @@
         }
         .sound-button:hover {
             background-color: #e0e0e0;
+        }
+        .player-controls {
+            display: flex;
+            align-items: center;
+        }
+        .player-controls audio {
+            height: 30px;
+            margin-right: 10px;
+        }
+        .download-button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .download-button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
@@ -44,7 +69,7 @@
 
     <script>
         const sections = [
-            {name: "ADS", folder: "ads"},
+        {name: "ADS", folder: "ads"},
             {name: "APOLLO", folder: "apollo"},
             {name: "CELEBS", folder: "celebs"},
             {name: "COBALT", folder: "cobalt"},
@@ -70,19 +95,44 @@
 
         const container = document.getElementById('soundboard-container');
 
-        // Function to create sound buttons
-        function createSoundButton(sectionId, soundName, filePath) {
+        // Function to create sound item (button, player, and download)
+        function createSoundItem(sectionId, soundName, filePath) {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'sound-item';
+
+            // Create play button
             const button = document.createElement('button');
             button.className = 'sound-button';
             button.textContent = soundName;
-            button.onclick = () => playSound(filePath);
-            document.getElementById(sectionId).appendChild(button);
-        }
+            button.onclick = () => {
+                const audio = itemDiv.querySelector('audio');
+                if (audio.paused) {
+                    audio.play();
+                } else {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            };
+            itemDiv.appendChild(button);
 
-        // Function to play sound
-        function playSound(filePath) {
-            const audio = new Audio(filePath);
-            audio.play();
+            // Create audio player
+            const playerControls = document.createElement('div');
+            playerControls.className = 'player-controls';
+            const audio = document.createElement('audio');
+            audio.controls = true;
+            audio.src = filePath;
+            playerControls.appendChild(audio);
+
+            // Create download button
+            const downloadButton = document.createElement('a');
+            downloadButton.className = 'download-button';
+            downloadButton.textContent = 'Download';
+            downloadButton.href = filePath;
+            downloadButton.download = soundName + '.mp3';
+            playerControls.appendChild(downloadButton);
+
+            itemDiv.appendChild(playerControls);
+            document.getElementById(sectionId).appendChild(itemDiv);
         }
 
         // Function to load sounds for a section
@@ -96,7 +146,7 @@
                 files.forEach(file => {
                     if (file.name.toLowerCase().endsWith('.mp3')) {
                         const soundName = file.name.replace('.mp3', '').replace(/_/g, ' ');
-                        createSoundButton(sectionId, soundName, file.download_url);
+                        createSoundItem(sectionId, soundName, file.download_url);
                     }
                 });
             } catch (error) {
