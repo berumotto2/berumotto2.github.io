@@ -4,21 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE DAN GHEESLING SHOW SOUNDBOARD</title>
+    <script src="soundboard.js"></script>
     <style>
         body {
+            background-color: #ded6d6;
             font-family: Arial, sans-serif;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
         h1 {
+            color: #14110f;
             text-align: center;
+            background-color: #f07167;
+            border: 3px solid #463f3a;
         }
         h2 {
+            color: #14110f;
             margin-top: 20px;
+            background-color: #f07167;
+            border: 3px solid #463f3a;
         }
         .soundboard-section {
-            border: 1px solid #ccc;
+            border: 10px solid #463f3a;
             padding: 10px;
             margin-bottom: 20px;
         }
@@ -30,8 +38,8 @@
         .sound-button {
             margin-right: 10px;
             padding: 10px;
-            background-color: #f0f0f0;
-            border: none;
+            background-color: #f07167;
+            border: solid #fcbf49;
             border-radius: 5px;
             cursor: pointer;
         }
@@ -48,15 +56,62 @@
         }
         .download-button {
             padding: 5px 10px;
-            background-color: #4CAF50;
-            color: white;
+            background-color: #ffd000;
+            color: #0a0908;
             border: none;
             border-radius: 3px;
             cursor: pointer;
             text-decoration: none;
         }
         .download-button:hover {
-            background-color: #45a049;
+            background-color: #ffd000;
+        }
+        #nav-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        #nav-menu ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        #nav-menu li {
+            margin-bottom: 5px;
+        }
+        #nav-menu a {
+            text-decoration: none;
+            color: #333;
+        }
+        #nav-menu a:hover {
+            text-decoration: underline;
+        }
+        #menu-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1001;
+            background-color: #ffd000;
+            color: #0a0908;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .error-message {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
         }
         #nav-menu {
             position: fixed;
