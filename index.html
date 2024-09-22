@@ -7,26 +7,28 @@
     <script src="soundboard.js"></script>
     <style>
         body {
-            background-color: #ded6d6;
+            background-color: #585b56;
             font-family: Arial, sans-serif;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
         h1 {
+            border-radius: 7px;
             color: #14110f;
             text-align: center;
             background-color: #f07167;
-            border: 3px solid #463f3a;
+            border: 3px solid #d7af70;
         }
         h2 {
+            border-radius: 7px;
             color: #14110f;
             margin-top: 20px;
             background-color: #f07167;
-            border: 3px solid #463f3a;
+            border: 3px solid #d7af70;
         }
         .soundboard-section {
-            border: 3px solid #463f3a;
+            border: 3px solid #d7af70;
             padding: 10px;
             margin-bottom: 20px;
         }
@@ -40,7 +42,7 @@
             margin-right: 10px;
             padding: 10px;
             background-color: #f07167;
-            border: solid #ffd000;
+            border: solid #d7af70;
             border-radius: 7px;
             cursor: pointer;
         }
@@ -57,7 +59,7 @@
         }
         .download-button {
             padding: 5px 10px;
-            background-color: #ffd000;
+            background-color: #d7af70;
             color: #0a0908;
             border: none;
             border-radius: 3px;
@@ -65,7 +67,7 @@
             text-decoration: none;
         }
         .download-button:hover {
-            background-color: #ffd000;
+            background-color: #d7af70;
         }
         #nav-menu {
             position: fixed;
@@ -92,14 +94,15 @@
             color: #333;
         }
         #nav-menu a:hover {
+            background-color: #E76B74;
             text-decoration: underline;
         }
         #menu-toggle {
             position: fixed;
-            top: 10px;
-            right: 10px;
+            top: 20px;
+            right: 20px;
             z-index: 1001;
-            background-color: #ffd000;
+            background-color: #d7af70;
             color: #0a0908;
             border: none;
             border-radius: 5px;
@@ -140,18 +143,6 @@
         }
         #nav-menu a:hover {
             text-decoration: underline;
-        }
-        #menu-toggle {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 1001;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
         }
         .error-message {
             color: #721c24;
