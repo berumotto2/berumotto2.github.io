@@ -4,169 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE DAN GHEESLING SHOW SOUNDBOARD</title>
-    <script src="soundboard.js"></script>
     <style>
         body {
-            background-color: #585b56;
             font-family: Arial, sans-serif;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
         }
         h1 {
-            border-radius: 7px;
-            color: #14110f;
-            text-align: center;
-            background-color: #f07167;
-            border: 3px solid #d7af70;
+            margin: 0;
+            font-size: 2.5rem;
         }
-        h2 {
-            border-radius: 7px;
-            color: #14110f;
-            margin-top: 20px;
-            background-color: #f07167;
-            border: 3px solid #d7af70;
+        nav {
+            background-color: #444;
+            padding: 1rem;
         }
-        .soundboard-section {
-            border: 3px solid #d7af70;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-        .sound-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .sound-button {
-            font-size: large;
-            margin-right: 10px;
-            padding: 10px;
-            background-color: #f07167;
-            border: solid #d7af70;
-            border-radius: 7px;
-            cursor: pointer;
-        }
-        .sound-button:hover {
-            background-color: #e0e0e0;
-        }
-        .player-controls {
-            display: flex;
-            align-items: center;
-        }
-        .player-controls audio {
-            height: 30px;
-            margin-right: 10px;
-        }
-        .download-button {
-            padding: 5px 10px;
-            background-color: #d7af70;
-            color: #0a0908;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .download-button:hover {
-            background-color: #d7af70;
-        }
-        #nav-menu {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #f8f8f8;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            max-height: 80vh;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-        #nav-menu ul {
+        nav ul {
             list-style-type: none;
             padding: 0;
             margin: 0;
+            display: flex;
+            justify-content: center;
         }
-        #nav-menu li {
-            margin-bottom: 5px;
+        nav li {
+            margin: 0 1rem;
         }
-        #nav-menu a {
+        nav a {
+            color: white;
             text-decoration: none;
-            color: #333;
-        }
-        #nav-menu a:hover {
-            background-color: #E76B74;
-            text-decoration: underline;
-        }
-        #menu-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1001;
-            background-color: #d7af70;
-            color: #0a0908;
-            border: none;
+            font-size: 1.2rem;
+            padding: 0.5rem 1rem;
             border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
+            transition: background-color 0.3s;
         }
-        .error-message {
-            color: #721c24;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
+        nav a:hover {
+            background-color: #555;
         }
-        #nav-menu {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #f8f8f8;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            max-height: 80vh;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-        #nav-menu ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        #nav-menu li {
-            margin-bottom: 5px;
-        }
-        #nav-menu a {
-            text-decoration: none;
-            color: #333;
-        }
-        #nav-menu a:hover {
-            text-decoration: underline;
-        }
-        .error-message {
-            color: #721c24;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
+        #soundboard-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
-    <h1>THE DAN GHEESLING SHOW SOUNDBOARD</h1>
-
-    <button id="menu-toggle">Menu</button>
-
-    <nav id="nav-menu" style="display: none;">
-        <ul id="section-list">
-            <!-- Section links will be dynamically inserted here -->
+    <header>
+        <h1>THE DAN GHEESLING SHOW SOUNDBOARD</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Categories</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
         </ul>
     </nav>
-
     <div id="soundboard-container">
-        <!-- Soundboard sections will be dynamically inserted here -->
+        <!-- Soundboard content will go here -->
     </div>
 
     <script>
@@ -294,5 +197,6 @@
             navMenu.style.display = navMenu.style.display === 'none' ? 'block' : 'none';
         });
     </script>
+
 </body>
 </html>
