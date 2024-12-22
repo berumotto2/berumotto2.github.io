@@ -26,6 +26,7 @@
             margin-top: 20px;
             background-color: #f07167;
             border: 3px solid #d7af70;
+            padding: 10px;
         }
         .nav-menu {
             display: flex;
@@ -51,22 +52,40 @@
         }
         .soundboard-section {
             border: 3px solid #d7af70;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 7px;
+        }
+        /* New grid layout for sound items */
+        #soundboard_container {
+            display: grid;
+            gap: 20px;
+        }
+        .sound-items-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
             padding: 10px;
-            margin-bottom: 20px;
         }
         .sound-item {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 5px;
+            gap: 15px;
         }
         .sound-button {
             font-size: large;
-            margin-right: 10px;
-            padding: 10px;
+            padding: 10px 15px;
             background-color: #f07167;
-            border: solid #d7af70;
+            border: 2px solid #d7af70;
             border-radius: 7px;
             cursor: pointer;
+            min-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .sound-button:hover {
             background-color: #e0e0e0;
@@ -74,19 +93,22 @@
         .player-controls {
             display: flex;
             align-items: center;
+            gap: 10px;
+            flex: 1;
         }
         .player-controls audio {
             height: 30px;
-            margin-right: 10px;
+            flex: 1;
         }
         .download-button {
-            padding: 5px 10px;
+            padding: 8px 12px;
             background-color: #d7af70;
             color: #0a0908;
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
+            white-space: nowrap;
         }
         .download-button:hover {
             background-color: #c69f60;
@@ -98,6 +120,14 @@
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 5px;
+            grid-column: 1 / -1;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 1000px) {
+            .sound-items-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
