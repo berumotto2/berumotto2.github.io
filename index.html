@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE DAN GHEESLING SHOW SOUNDBOARD</title>
-    <script src="soundboard.js"></script>
     <style>
         body {
-            background-color: #353535;
+            background-color: #383838;
             font-family: Arial, sans-serif;
             max-width: 1200px;
             margin: 0 auto;
@@ -19,6 +18,7 @@
             text-align: center;
             background-color: #f07167;
             border: 3px solid #d7af70;
+            margin-bottom: 20px;
         }
         h2 {
             border-radius: 7px;
@@ -26,6 +26,28 @@
             margin-top: 20px;
             background-color: #f07167;
             border: 3px solid #d7af70;
+        }
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            padding: 20px;
+            background-color: #444;
+            border-radius: 7px;
+            margin-bottom: 20px;
+        }
+        .nav-menu a {
+            background-color: #f07167;
+            color: #14110f;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 2px solid #d7af70;
+            transition: background-color 0.3s;
+        }
+        .nav-menu a:hover {
+            background-color: #e0e0e0;
         }
         .soundboard-section {
             border: 3px solid #d7af70;
@@ -67,82 +89,7 @@
             text-decoration: none;
         }
         .download-button:hover {
-            background-color: #d7af70;
-        }
-        #nav-menu {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #f8f8f8;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            max-height: 80vh;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-        #nav-menu ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        #nav-menu li {
-            margin-bottom: 5px;
-        }
-        #nav-menu a {
-            text-decoration: none;
-            color: #333;
-        }
-        #nav-menu a:hover {
-            background-color: #E76B74;
-            text-decoration: underline;
-        }
-        #menu-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1001;
-            background-color: #d7af70;
-            color: #0a0908;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-        .error-message {
-            color: #721c24;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
-        #nav-menu {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #f8f8f8;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            max-height: 80vh;
-            overflow-y: auto;
-            z-index: 1000;
-        }
-        #nav-menu ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        #nav-menu li {
-            margin-bottom: 5px;
-        }
-        #nav-menu a {
-            text-decoration: none;
-            color: #333;
-        }
-        #nav-menu a:hover {
-            text-decoration: underline;
+            background-color: #c69f60;
         }
         .error-message {
             color: #721c24;
@@ -157,12 +104,8 @@
 <body>
     <h1>THE DAN GHEESLING SHOW SOUNDBOARD</h1>
 
-    <button id="menu-toggle">Menu</button>
-
-    <nav id="nav-menu" style="display: none;">
-        <ul id="section-list">
-            <!-- Section links will be dynamically inserted here -->
-        </ul>
+    <nav class="nav-menu" id="nav-menu">
+        <!-- Section links will be dynamically inserted here -->
     </nav>
 
     <div id="soundboard-container">
@@ -197,9 +140,8 @@
         ];
 
         const container = document.getElementById('soundboard-container');
-        const sectionList = document.getElementById('section-list');
+        const navMenu = document.getElementById('nav-menu');
 
-        // Function to create sound item (button, player, and download)
         function createSoundItem(sectionId, soundName, filePath) {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'sound-item';
@@ -236,7 +178,6 @@
             document.getElementById(sectionId).appendChild(itemDiv);
         }
 
-        // Function to load sounds for a section
         async function loadSoundsForSection(section) {
             const sectionId = `soundboard_${section.folder}`;
             const sectionElement = document.getElementById(sectionId);
@@ -266,8 +207,15 @@
             }
         }
 
-        // Create sections, load sounds, and populate navigation menu
+        // Create navigation menu and sections
         sections.forEach(section => {
+            // Add section to navigation menu
+            const link = document.createElement('a');
+            link.href = `#section_${section.folder}`;
+            link.textContent = section.name;
+            navMenu.appendChild(link);
+
+            // Create section container
             const div = document.createElement('div');
             div.className = 'soundboard-section';
             div.id = `section_${section.folder}`;
@@ -277,21 +225,6 @@
             `;
             container.appendChild(div);
             loadSoundsForSection(section);
-
-            // Add section to navigation menu
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.href = `#section_${section.folder}`;
-            a.textContent = section.name;
-            li.appendChild(a);
-            sectionList.appendChild(li);
-        });
-
-        // Toggle menu visibility
-        const menuToggle = document.getElementById('menu-toggle');
-        const navMenu = document.getElementById('nav-menu');
-        menuToggle.addEventListener('click', () => {
-            navMenu.style.display = navMenu.style.display === 'none' ? 'block' : 'none';
         });
     </script>
 </body>
