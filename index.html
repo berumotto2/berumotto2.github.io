@@ -24,10 +24,38 @@
         body {
             background-color: var(--dark-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .side-nav {
+            width: 200px;
+            position: sticky;
+            top: 120px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            padding-right: 15px;
+            display: none; /* Hidden initially, shown when scrolling */
+        }
+
+        .side-nav.visible {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-area {
+            flex: 1;
+            min-width: 0;
         }
 
         header {
@@ -36,6 +64,9 @@
             top: 0;
             background-color: var(--dark-bg);
             z-index: 100;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         h1 {
@@ -66,6 +97,9 @@
             background-color: var(--dark-bg);
             padding: 10px 0;
             z-index: 99;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         .search-container {
@@ -127,6 +161,36 @@
             background-color: var(--hover-color);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .side-nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .side-nav-menu a {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 2px solid var(--secondary-color);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .side-nav-menu a:hover {
+            background-color: var(--hover-color);
+            transform: translateX(3px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .side-nav-menu a.active {
+            background-color: var(--hover-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .soundboard-section {
@@ -323,6 +387,24 @@
             .nav-menu a {
                 padding: 6px 12px;
                 font-size: 14px;
+            }
+            
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .side-nav {
+                width: 100%;
+                position: static;
+                margin-bottom: 15px;
+                height: auto;
+                max-height: 180px;
+            }
+            
+            .side-nav-menu {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 5px;
             }
         }
 
