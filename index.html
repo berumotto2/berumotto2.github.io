@@ -151,6 +151,7 @@
         }
 
         /* Side navigation - always visible and sticky */
+        /* Make the side navigation always visible and sticky */
         .side-nav {
             width: 220px;
             position: fixed;
@@ -164,7 +165,13 @@
             padding: 15px;
             border-radius: 0 7px 7px 0;
             margin-top: 20px;
-            opacity: 1;
+            opacity: 1; /* Ensure it's always visible */
+        }
+
+        /* Adjust the content container to account for the fixed side navigation */
+        .content-container {
+            margin-left: 240px; /* Add margin to avoid overlap with the side navigation */
+            transition: margin-left 0.3s ease;
         }
 
         .side-nav a {
@@ -577,27 +584,37 @@
 
         const container = document.getElementById('soundboard-container');
         const navMenu = document.getElementById('nav-menu');
+        const sideNav = document.getElementById('side-nav');
+        const contentContainer = document.getElementById('content-container');
         const searchInput = document.getElementById('search-input');
         const searchButton = document.getElementById('search-button');
         const currentlyPlaying = document.getElementById('currently-playing');
         const currentSoundName = document.getElementById('current-sound-name');
+        const playPauseButton = document.getElementById('play-pause-button');
         const stopButton = document.getElementById('stop-button');
+        const rewindButton = document.getElementById('rewind-button');
+        const progressBar = document.getElementById('progress-bar');
+        const currentTimeDisplay = document.getElementById('current-time');
+        const totalTimeDisplay = document.getElementById('total-time');
         const backToTop = document.getElementById('back-to-top');
         const themeToggle = document.getElementById('theme-toggle');
 
         // Track all sounds for search functionality
         const allSounds = [];
-        
-        // References for currently playing sound
-        let currentSource = null;
-        let currentSoundButton = null;
 
         // Create navigation menu first
         sections.forEach(section => {
-            const link = document.createElement('a');
-            link.href = `#section_${section.folder}`;
-            link.textContent = section.name;
-            navMenu.appendChild(link);
+            // Top navigation link
+            const topLink = document.createElement('a');
+            topLink.href = `#section_${section.folder}`;
+            topLink.textContent = section.name;
+            navMenu.appendChild(topLink);
+
+            // Side navigation link (duplicate)
+            const sideLink = document.createElement('a');
+            sideLink.href = `#section_${section.folder}`;
+            sideLink.textContent = section.name;
+            sideNav.appendChild(sideLink);
 
             // Create section containers
             const div = document.createElement('div');
