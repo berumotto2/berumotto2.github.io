@@ -24,38 +24,10 @@
         body {
             background-color: var(--dark-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0 auto;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
             color: white;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-content {
-            display: flex;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .side-nav {
-            width: 200px;
-            position: sticky;
-            top: 120px;
-            height: calc(100vh - 120px);
-            overflow-y: auto;
-            padding-right: 15px;
-            display: none; /* Hidden initially, shown when scrolling */
-        }
-
-        .side-nav.visible {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .content-area {
-            flex: 1;
-            min-width: 0;
+            overflow-x: hidden;
         }
 
         header {
@@ -64,8 +36,6 @@
             top: 0;
             background-color: var(--dark-bg);
             z-index: 100;
-            max-width: 1200px;
-            margin: 0 auto;
             width: 100%;
         }
 
@@ -76,7 +46,8 @@
             background-color: var(--primary-color);
             border: 3px solid var(--secondary-color);
             padding: 15px;
-            margin-bottom: 20px;
+            margin: 0 auto 20px;
+            max-width: 1200px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             font-size: 2rem;
         }
@@ -91,15 +62,29 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .nav-container {
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .content-container {
+            flex: 1;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+            margin-left: 240px; /* Added to account for the fixed side navigation */
+        }
+
+        .top-nav-container {
             position: sticky;
             top: 0;
             background-color: var(--dark-bg);
             padding: 10px 0;
             z-index: 99;
+            margin-bottom: 20px;
             max-width: 1200px;
             margin: 0 auto;
-            width: 100%;
         }
 
         .search-container {
@@ -155,6 +140,8 @@
             border: 2px solid var(--secondary-color);
             transition: all 0.3s ease;
             font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
         }
 
         .nav-menu a:hover {
@@ -163,34 +150,55 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .side-nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+        /* Side navigation - always visible and sticky */
+        .side-nav {
+            width: 220px;
+            position: fixed;
+            top: 20px;
+            height: calc(100vh - 20px);
+            overflow-y: auto;
+            background-color: var(--darker-bg);
+            border-right: 3px solid var(--secondary-color);
+            transition: width 0.3s ease;
+            z-index: 90;
+            padding: 15px;
+            border-radius: 0 7px 7px 0;
+            margin-top: 20px;
+            opacity: 1;
         }
 
-        .side-nav-menu a {
+        .side-nav a {
+            display: block;
+            padding: 10px;
             background-color: var(--primary-color);
             color: var(--text-color);
-            padding: 8px 12px;
+            margin-bottom: 5px;
             text-decoration: none;
             border-radius: 5px;
             border: 2px solid var(--secondary-color);
-            transition: all 0.3s ease;
+            opacity: 1;
+            transition: opacity 0.3s ease;
             font-weight: bold;
-            font-size: 14px;
-            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .side-nav-menu a:hover {
+        .side-nav a:hover {
             background-color: var(--hover-color);
-            transform: translateX(3px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .side-nav-menu a.active {
-            background-color: var(--hover-color);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        .side-nav::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .side-nav::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+
+        .side-nav::-webkit-scrollbar-thumb {
+            background-color: var(--secondary-color);
+            border-radius: 4px;
         }
 
         .soundboard-section {
@@ -210,18 +218,17 @@
 
         .sound-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
 
         .sound-item {
-            display: flex;
-            flex-direction: column;
             background-color: rgba(255, 255, 255, 0.05);
             border-radius: 7px;
-            padding: 10px;
+            padding: 15px;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .sound-item:hover {
@@ -230,65 +237,50 @@
         }
 
         .sound-button {
-    font-size: 16px;
-    width: 100%;
-    padding: 12px;
-    background-color: var(--primary-color);
-    border: 2px solid var(--secondary-color);
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    position: relative;
-}
+            font-size: 16px;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            border: 2px solid var(--secondary-color);
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
 
-.sound-button i {
-    margin-right: 8px;
-}
+        .sound-button i {
+            margin-right: 8px;
+        }
 
-.sound-button span {
-    flex-grow: 1;
-    text-align: left;
-    margin-right: 10px;
-}
+        .sound-button:hover {
+            background-color: var(--hover-color);
+            transform: scale(1.02);
+        }
 
-.sound-button .download-button {
-    margin-left: auto;
-    margin-right: 0;
-    opacity: 0.7;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    cursor: pointer;
-}
-
-.sound-button .download-button:hover {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-        .download-button {
-            padding: 8px 12px;
+        .sound-button.playing {
             background-color: var(--secondary-color);
             color: var(--text-color);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            transition: all 0.2s ease;
-            margin-top: 8px;
         }
 
-        .download-button i {
-            margin-right: 6px;
+        .download-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
         }
 
-        .download-button:hover {
-            background-color: #c69f60;
-            transform: translateY(-2px);
+        .download-icon:hover {
+            opacity: 1;
+        }
+
+        .download-icon span {
+            display: none; /* Hide text, keep only the icon */
         }
 
         .error-message {
@@ -328,23 +320,90 @@
             left: 0;
             right: 0;
             background-color: var(--darker-bg);
-            padding: 10px;
+            padding: 15px;
             border-top: 2px solid var(--secondary-color);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            flex-direction: column;
         }
 
-        .currently-playing span {
-            margin-right: 10px;
+        .sound-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .sound-info span {
+            margin: 0 10px;
             color: white;
             font-weight: bold;
+            flex: 1;
+            text-align: center;
+        }
+
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5px;
+            gap: 15px;
+        }
+
+        .control-button {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid var(--secondary-color);
+        }
+
+        .control-button:hover {
+            background-color: var(--hover-color);
+            transform: scale(1.1);
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 10px auto;
+            background-color: var(--dark-bg);
+            border-radius: 5px;
+            overflow: hidden;
+            height: 10px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0;
+            transition: width 0.1s linear;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+            margin: 5px auto;
+            color: white;
+            font-size: 12px;
         }
 
         .back-to-top {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px;
             right: 20px;
             background-color: var(--primary-color);
             color: var(--text-color);
@@ -370,64 +429,43 @@
             background-color: var(--hover-color);
         }
 
+        @media (max-width: 992px) {
+            .side-nav {
+                width: 0;
+                padding: 0;
+            }
+
+            .content-container {
+                margin-left: 0 !important;
+            }
+        }
+
         @media (max-width: 768px) {
             .sound-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             h1 {
                 font-size: 1.5rem;
                 padding: 10px;
             }
-            
+
             .nav-menu {
                 padding: 10px;
             }
-            
+
             .nav-menu a {
                 padding: 6px 12px;
                 font-size: 14px;
             }
-            
-            .main-content {
-                flex-direction: column;
-            }
-            
-            .side-nav {
-                width: 100%;
-                position: static;
-                margin-bottom: 15px;
-                height: auto;
-                max-height: 180px;
-            }
-            
-            .side-nav-menu {
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 5px;
-            }
-        }
 
-        /* Dark mode toggle */
-        .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+            .currently-playing {
+                padding: 10px;
+            }
 
-        .theme-toggle:hover {
-            background-color: var(--hover-color);
+            .progress-container, .time-display {
+                max-width: 100%;
+            }
         }
 
         /* Light mode styles */
@@ -455,7 +493,7 @@
         <h1>THE DAN GHEESLING SHOW SOUNDBOARD</h1>
     </header>
 
-    <div class="nav-container">
+    <div class="top-nav-container">
         <div class="search-container">
             <input type="text" id="search-input" placeholder="Search sounds...">
             <button id="search-button"><i class="fas fa-search"></i></button>
@@ -466,16 +504,40 @@
         </nav>
     </div>
 
-    <div id="soundboard-container">
-        <!-- Soundboard sections will be dynamically inserted here -->
+    <div class="main-container">
+        <div class="side-nav" id="side-nav">
+            <!-- Section links will be duplicated here for side navigation -->
+        </div>
+
+        <div class="content-container" id="content-container">
+            <div id="soundboard-container">
+                <!-- Soundboard sections will be dynamically inserted here -->
+            </div>
+        </div>
     </div>
 
     <div class="currently-playing" id="currently-playing">
-        <span>Now Playing: </span>
-        <span id="current-sound-name"></span>
-        <button id="stop-button" style="margin-left: 10px; padding: 5px 10px; background-color: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer;">
-            <i class="fas fa-stop"></i> Stop
-        </button>
+        <div class="sound-info">
+            <span id="current-sound-name"></span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="time-display">
+            <span id="current-time">0:00</span>
+            <span id="total-time">0:00</span>
+        </div>
+        <div class="player-controls">
+            <button class="control-button" id="rewind-button">
+                <i class="fas fa-backward"></i>
+            </button>
+            <button class="control-button" id="play-pause-button">
+                <i class="fas fa-pause"></i>
+            </button>
+            <button class="control-button" id="stop-button">
+                <i class="fas fa-stop"></i>
+            </button>
+        </div>
     </div>
 
     <div class="back-to-top" id="back-to-top">
@@ -484,7 +546,7 @@
 
     <!-- Load external script file -->
     <script src="soundboard.js"></script>
-    
+
     <script>
         // Initialize variables for UI functionality
         const sections = [
