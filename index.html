@@ -166,33 +166,42 @@
         }
 
         .sound-button {
-            font-size: 16px;
-            margin-bottom: 10px;
-            padding: 12px;
-            background-color: var(--primary-color);
-            border: 2px solid var(--secondary-color);
-            border-radius: 7px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+    font-size: 16px;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    border: 2px solid var(--secondary-color);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
 
-        .sound-button i {
-            margin-right: 8px;
-        }
+.sound-button i {
+    margin-right: 8px;
+}
 
-        .sound-button:hover {
-            background-color: var(--hover-color);
-            transform: scale(1.02);
-        }
+.sound-button span {
+    flex-grow: 1;
+    text-align: left;
+    margin-right: 10px;
+}
 
-        .sound-button.playing {
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-        }
+.sound-button .download-button {
+    margin-left: auto;
+    margin-right: 0;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.sound-button .download-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
 
         .download-button {
             padding: 8px 12px;
@@ -457,96 +466,61 @@
             container.appendChild(div);
         });
 
-        // Override the createSoundButton function from external JS to use our UI
-        window.createSoundButton = function(item, container) {
-            const sectionId = container.id;
-            const soundName = item.name.replace('.mp3', '').replace(/_/g, ' ');
-            
-            const soundItem = document.createElement('div');
-            soundItem.className = 'sound-item';
-            soundItem.dataset.name = soundName.toLowerCase();
-            soundItem.dataset.url = item.download_url;
-            
-            const button = document.createElement('button');
-            button.className = 'sound-button';
-            button.innerHTML = `<i class="fas fa-play"></i> <span>${soundName}</span>`;
-            button.dataset.url = item.download_url;
-            button.dataset.name = soundName;
-            
-            // Play sound using the AudioContext from external JS
-            button.addEventListener('click', function() {
-                const isPlaying = button.classList.contains('playing');
-                
-                // Stop any currently playing sound
-                if (currentSource) {
-                    currentSource.stop();
-                    currentSource = null;
-                    
-                    if (currentSoundButton) {
-                        currentSoundButton.classList.remove('playing');
-                        currentSoundButton.innerHTML = `<i class="fas fa-play"></i> <span>${currentSoundButton.dataset.name}</span>`;
-                    }
-                    
-                    // Hide the currently playing indicator
-                    currentlyPlaying.style.display = 'none';
-                }
-                
-                // If we weren't already playing this sound, start it
-                if (!isPlaying) {
-                    // Use the external JS loadSound function
-                    loadSound(item.download_url)
-                        .then(audioBuffer => {
-                            const source = audioContext.createBufferSource();
-                            source.buffer = audioBuffer;
-                            source.connect(audioContext.destination);
-                            
-                            // Store reference to current source
-                            currentSource = source;
-                            currentSoundButton = button;
-                            
-                            // Update button state
-                            button.classList.add('playing');
-                            button.innerHTML = `<i class="fas fa-pause"></i> <span>${soundName}</span>`;
-                            
-                            // Show currently playing indicator
-                            currentSoundName.textContent = soundName;
-                            currentlyPlaying.style.display = 'flex';
-                            
-                            // Set up ended event
-                            source.onended = function() {
-                                button.classList.remove('playing');
-                                button.innerHTML = `<i class="fas fa-play"></i> <span>${soundName}</span>`;
-                                currentlyPlaying.style.display = 'none';
-                                currentSource = null;
-                                currentSoundButton = null;
-                            };
-                            
-                            source.start(0);
-                        })
-                        .catch(error => console.error('Error playing sound:', error));
-                }
-            });
-            
-            soundItem.appendChild(button);
-            
-            // Add download button
-            const downloadButton = document.createElement('a');
-            downloadButton.className = 'download-button';
-            downloadButton.innerHTML = '<i class="fas fa-download"></i> Download';
-            downloadButton.href = item.download_url;
-            downloadButton.download = soundName + '.mp3';
-            soundItem.appendChild(downloadButton);
-            
-            // Add to the sound grid for this section
-            document.getElementById(sectionId).appendChild(soundItem);
-            
-            // Add to our global array for search
-            allSounds.push({
-                name: soundName,
-                element: soundItem,
-                url: item.download_url
-            });
-        };
+       // Override the createSoundButton function from external JS to use our UI
+window.createSoundButton = function(item, container) {
+    const sectionId = container.id;
+    const soundName = item.name.replace('.mp3', '').replace(/_/g, ' ');
+    
+    const soundItem = document.createElement('div');
+    soundItem.className = 'sound-item';
+    soundItem.dataset.name = soundName.toLowerCase();
+    soundItem.dataset.url = item.download_url;
+    
+    const button = document.createElement('button');
+    button.className = 'sound-button';
+    button.innerHTML = `
+        <i class="fas fa-play"></i> 
+        <span>${soundName}</span>
+        <i class="fas fa-download download-button" title="Download ${soundName}"></i>
+    `;
+    button.dataset.url = item.download_url;
+    button.dataset.name = soundName;
+    
+    // Play sound on click
+    button.addEventListener('click', function(e) {
+        // Handle download click
+        if (e.target.classList.contains('download-button') || e.target.closest('.download-button')) {
+            e.stopPropagation();
+            // Create and trigger download
+            const downloadLink = document.createElement('a');
+            downloadLink.href = item.download_url;
+            downloadLink.download = `${soundName}.mp3`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            return;
+        }
+        
+        // Handle play button functionality
+        if (currentSource && currentSoundButton === this && isPlaying) {
+            pauseSound();
+        } else if (currentSource && currentSoundButton === this && !isPlaying) {
+            resumeSound();
+        } else {
+            playSound(this.dataset.url, this, this.dataset.name);
+        }
+    });
+    
+    soundItem.appendChild(button);
+    container.appendChild(soundItem);
+    
+    // Add to global sounds list for search
+    allSounds.push({
+        element: soundItem,
+        name: soundName.toLowerCase(),
+        section: sectionId
+    });
+};
 
         // Override setupSoundboard to use our section structure
         window.setupSoundboard = async function() {
