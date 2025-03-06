@@ -16,6 +16,7 @@
             --hover-color: #e0e0e0;
             --card-bg: rgba(255, 255, 255, 0.05);
             --card-hover-bg: rgba(255, 255, 255, 0.1);
+            --sidebar-width: 250px;
         }
 
         * {
@@ -27,19 +28,21 @@
         body {
             background-color: var(--dark-bg);
             font-family: 'Inter', sans-serif;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+            margin: 0;
             color: var(--text-color);
             transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         header {
-            padding: 20px 0;
+            padding: 20px;
             position: sticky;
             top: 0;
             background-color: var(--dark-bg);
             z-index: 100;
+            width: 100%;
         }
 
         h1 {
@@ -49,27 +52,72 @@
             background-color: var(--primary-color);
             border: 3px solid var(--secondary-color);
             padding: 15px;
-            margin-bottom: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             font-size: 2rem;
             font-weight: 700;
         }
 
-        .nav-container {
-            position: sticky;
-            top: 0;
-            background-color: var(--dark-bg);
-            padding: 10px 0;
-            z-index: 99;
+        .theme-toggle {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 101;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--darker-bg);
+            border-right: 2px solid var(--secondary-color);
+            padding: 20px 10px;
+            position: fixed;
+            height: calc(100vh - 90px);
+            overflow-y: auto;
+            z-index: 90;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            left: 10px;
+            top: 90px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: 2px solid var(--secondary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 91;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .search-container {
-            display: flex;
             margin-bottom: 15px;
             padding: 10px;
             background-color: var(--darker-bg);
             border-radius: 12px;
             border: 2px solid var(--secondary-color);
+            display: flex;
         }
 
         #search-input {
@@ -98,22 +146,14 @@
 
         .nav-menu {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 10px;
-            justify-content: center;
-            padding: 15px;
-            background-color: var(--darker-bg);
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 2px solid var(--secondary-color);
-            max-height: 150px;
-            overflow-y: auto;
         }
 
         .nav-menu a {
             background-color: var(--primary-color);
             color: var(--text-color);
-            padding: 8px 16px;
+            padding: 10px 16px;
             text-decoration: none;
             border-radius: 8px;
             border: 2px solid var(--secondary-color);
@@ -121,10 +161,18 @@
             font-weight: 500;
         }
 
-        .nav-menu a:hover {
+        .nav-menu a:hover, .nav-menu a.active {
             background-color: var(--hover-color);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            transition: margin-left 0.3s ease;
         }
 
         .soundboard-section {
@@ -177,6 +225,7 @@
             display: flex;
             align-items: center;
             position: relative;
+            color: var(--text-color);
         }
 
         .sound-button i {
@@ -200,6 +249,10 @@
         .sound-button .download-button:hover {
             opacity: 1;
             transform: scale(1.1);
+        }
+
+        .sound-button.playing {
+            background-color: var(--secondary-color);
         }
 
         .download-button {
@@ -257,29 +310,121 @@
             100% { transform: rotate(360deg); }
         }
 
-        .currently-playing {
+        /* Enhanced Player */
+        .audio-player {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             background-color: var(--darker-bg);
-            padding: 10px;
+            padding: 15px;
             border-top: 2px solid var(--secondary-color);
             display: none;
-            justify-content: center;
-            align-items: center;
             z-index: 1000;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .currently-playing span {
-            margin-right: 10px;
-            color: white;
-            font-weight: 500;
+        .player-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .player-info {
+            flex: 1;
+            margin: 0 20px;
+            overflow: hidden;
+        }
+
+        .player-title {
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 5px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background-color: var(--card-bg);
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0;
+            transition: width 0.1s linear;
+        }
+
+        .player-time {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .control-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-button:hover {
+            background-color: var(--hover-color);
+            transform: scale(1.1);
+        }
+
+        .control-button.large {
+            width: 50px;
+            height: 50px;
+            font-size: 18px;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 6px;
+            background-color: var(--card-bg);
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .volume-level {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 100%;
         }
 
         .back-to-top {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px;
             right: 20px;
             background-color: var(--primary-color);
             color: var(--text-color);
@@ -293,7 +438,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             opacity: 0;
             transition: opacity 0.3s;
-            z-index: 1000;
+            z-index: 900;
             border: 2px solid var(--secondary-color);
         }
 
@@ -303,26 +448,6 @@
 
         .back-to-top:hover {
             background-color: var(--hover-color);
-        }
-
-        @media (max-width: 768px) {
-            .sound-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 1.5rem;
-                padding: 10px;
-            }
-            
-            .nav-menu {
-                padding: 10px;
-            }
-            
-            .nav-menu a {
-                padding: 6px 12px;
-                font-size: 14px;
-            }
         }
 
         /* Custom Scrollbar */
@@ -359,6 +484,62 @@
         body.light-mode .sound-item:hover {
             background-color: var(--card-hover-bg);
         }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .content-area {
+                margin-left: 0;
+            }
+
+            .theme-toggle {
+                top: 20px;
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sound-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+                padding: 10px;
+            }
+            
+            .player-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .player-controls {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .player-info {
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .volume-control {
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -369,27 +550,63 @@
         <h1>THE DAN GHEESLING SHOW SOUNDBOARD</h1>
     </header>
 
-    <div class="nav-container">
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="Search sounds...">
-            <button id="search-button"><i class="fas fa-search"></i></button>
+    <div class="main-container">
+        <button class="sidebar-toggle" id="sidebar-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="sidebar" id="sidebar">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search sounds...">
+                <button id="search-button"><i class="fas fa-search"></i></button>
+            </div>
+
+            <nav class="nav-menu" id="nav-menu">
+                <!-- Section links will be dynamically inserted here -->
+            </nav>
         </div>
 
-        <nav class="nav-menu" id="nav-menu">
-            <!-- Section links will be dynamically inserted here -->
-        </nav>
+        <div class="content-area">
+            <div id="soundboard-container">
+                <!-- Soundboard sections will be dynamically inserted here -->
+            </div>
+        </div>
     </div>
 
-    <div id="soundboard-container">
-        <!-- Soundboard sections will be dynamically inserted here -->
-    </div>
-
-    <div class="currently-playing" id="currently-playing">
-        <span>Now Playing: </span>
-        <span id="current-sound-name"></span>
-        <button id="stop-button" style="margin-left: 10px; padding: 5px 10px; background-color: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer;">
-            <i class="fas fa-stop"></i> Stop
-        </button>
+    <div class="audio-player" id="audio-player">
+        <div class="player-container">
+            <div class="player-controls">
+                <button class="control-button" id="prev-button" title="Previous">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button class="control-button large" id="play-pause-button" title="Play/Pause">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="control-button" id="next-button" title="Next">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
+            
+            <div class="player-info">
+                <div class="player-title" id="player-title">No sound selected</div>
+                <div class="progress-container" id="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <div class="player-time">
+                    <span id="current-time">0:00</span>
+                    <span id="total-time">0:00</span>
+                </div>
+            </div>
+            
+            <div class="volume-control">
+                <button class="control-button" id="volume-button" title="Mute/Unmute">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <div class="volume-slider" id="volume-slider">
+                    <div class="volume-level" id="volume-level"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="back-to-top" id="back-to-top">
@@ -431,24 +648,50 @@
         const navMenu = document.getElementById('nav-menu');
         const searchInput = document.getElementById('search-input');
         const searchButton = document.getElementById('search-button');
-        const currentlyPlaying = document.getElementById('currently-playing');
-        const currentSoundName = document.getElementById('current-sound-name');
-        const stopButton = document.getElementById('stop-button');
         const backToTop = document.getElementById('back-to-top');
         const themeToggle = document.getElementById('theme-toggle');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        // Audio player elements
+        const audioPlayer = document.getElementById('audio-player');
+        const playerTitle = document.getElementById('player-title');
+        const playPauseButton = document.getElementById('play-pause-button');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const currentTimeEl = document.getElementById('current-time');
+        const totalTimeEl = document.getElementById('total-time');
+        const volumeButton = document.getElementById('volume-button');
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeLevel = document.getElementById('volume-level');
 
         // Track all sounds for search functionality
         const allSounds = [];
+        let currentPlaylist = [];
+        let currentPlaylistIndex = -1;
         
-        // References for currently playing sound
+        // References for audio context and player
+        let audioContext;
         let currentSource = null;
+        let currentGainNode = null;
+        let currentBuffer = null;
+        let startTime = 0;
+        let pausedAt = 0;
+        let isPlaying = false;
         let currentSoundButton = null;
+        let currentSoundUrl = '';
+        let currentSoundName = '';
+        let currentVolume = 1;
+        let isMuted = false;
 
         // Create navigation menu first
         sections.forEach(section => {
             const link = document.createElement('a');
             link.href = `#section_${section.folder}`;
             link.textContent = section.name;
+            link.dataset.section = section.folder;
             navMenu.appendChild(link);
 
             // Create section containers
@@ -462,241 +705,673 @@
             container.appendChild(div);
         });
 
-        // Override the createSoundButton function from external JS to use our UI
-        window.createSoundButton = function(item, container) {
-            const sectionId = container.id;
-            const soundName = item.name.replace('.mp3', '').replace(/_/g, ' ');
-            
-            const soundItem = document.createElement('div');
-            soundItem.className = 'sound-item';
-            soundItem.dataset.name = soundName.toLowerCase();
-            soundItem.dataset.url = item.download_url;
-            
-            const button = document.createElement('button');
-            button.className = 'sound-button';
-            button.innerHTML = `
-                <i class="fas fa-play"></i> 
-                <span>${soundName}</span>
-                <i class="fas fa-download download-button" title="Download ${soundName}"></i>
-            `;
-            button.dataset.url = item.download_url;
-            button.dataset.name = soundName;
-            
-            // Play sound on click
-            button.addEventListener('click', function(e) {
-                // Handle download click
-                if (e.target.classList.contains('download-button') || e.target.closest('.download-button')) {
-                    e.stopPropagation();
-                    // Create and trigger download
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = item.download_url;
-                    downloadLink.download = `${soundName}.mp3`;
-                    document.body.appendChild(downloadLink);
-                    downloadLink.click();
-                    document.body.removeChild(downloadLink);
-                    return;
-                }
-                
-                // Handle play button functionality
-                if (currentSource && currentSoundButton === this && isPlaying) {
-                    pauseSound();
-                } else if (currentSource && currentSoundButton === this && !isPlaying) {
-                    resumeSound();
-                } else {
-                    playSound(this.dataset.url, this, this.dataset.name);
-                }
-            });
-            
-            soundItem.appendChild(button);
-            container.appendChild(soundItem);
-            
-            // Add to global sounds list for search
-            allSounds.push({
-                element: soundItem,
-                name: soundName.toLowerCase(),
-                section: sectionId
-            });
-        };
+        // Initialize audio context
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
 
-        // Override setupSoundboard to use our section structure
-        window.setupSoundboard = async function() {
+        // Format time in mm:ss
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        }
+
+        // Load sound from URL
+        async function loadSound(url) {
+            if (soundCache.has(url)) {
+                return soundCache.get(url);
+            }
+
             try {
-                for (const section of sections) {
-                    const sectionElement = document.getElementById(`soundboard_${section.folder}`);
-                    
-                    // Show loading indicator
-                    const loadingDiv = document.createElement('div');
-                    loadingDiv.className = 'section-loading';
-                    loadingDiv.innerHTML = '<div class="loader"></div>';
-                    sectionElement.appendChild(loadingDiv);
-                    
-                    try {
-                        // Use the external fetchGitHubDirectory function
-                        const contents = await fetchGitHubDirectory(`sounds/${section.folder}`);
-                        
-                        // Remove loading indicator
-                        sectionElement.removeChild(loadingDiv);
-                        
-                        if (contents && contents.length > 0) {
-                            // Filter for MP3 files and create buttons
-                            const mp3Files = contents.filter(file => file.name.toLowerCase().endsWith('.mp3'));
-                            
-                            if (mp3Files.length > 0) {
-                                mp3Files.forEach(file => {
-                                    createSoundButton(file, sectionElement);
-                                });
-                            } else {
-                                const noSoundsMsg = document.createElement('p');
-                                noSoundsMsg.textContent = 'No sounds found in this section.';
-                                sectionElement.appendChild(noSoundsMsg);
-                            }
-                        }
-                    } catch (error) {
-                        console.error(`Error loading section ${section.name}:`, error);
-                        sectionElement.removeChild(loadingDiv);
-                        
-                        const errorMessage = document.createElement('div');
-                        errorMessage.className = 'error-message';
-                        errorMessage.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Failed to load sounds for ${section.name}. ${error.message}`;
-                        sectionElement.appendChild(errorMessage);
-                    }
+                initAudioContext();
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
+                const arrayBuffer = await response.arrayBuffer();
+                const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+                soundCache.set(url, audioBuffer);
+                return audioBuffer;
             } catch (error) {
-                console.error('Error setting up soundboard:', error);
+                console.error('Error loading sound:', error);
+                throw error;
             }
-        };
+        }
 
-        // Search functionality
-        function performSearch() {
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            
-            if (searchTerm === '') {
-                // Show all sections if search is empty
-                document.querySelectorAll('.soundboard-section').forEach(section => {
-                    section.style.display = 'block';
-                });
+        // Play sound
+        async function playSound(url, button, name) {
+            try {
+                initAudioContext();
                 
-                // Reset all sound items
-                allSounds.forEach(sound => {
-                    sound.element.style.display = 'flex';
-                });
+                // Resume audio context if suspended
+                if (audioContext.state === 'suspended') {
+                    await audioContext.resume();
+                }
                 
-                return;
-            }
-            
-            // Hide all sections initially
-            document.querySelectorAll('.soundboard-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            
-            // Filter sounds and show matching sections
-            let hasResults = false;
-            
-            allSounds.forEach(sound => {
-                const matches = sound.name.toLowerCase().includes(searchTerm);
-                sound.element.style.display = matches ? 'flex' : 'none';
-                
-                if (matches) {
-                    hasResults = true;
-                    // Show the parent section
-                    const sectionElement = sound.element.closest('.soundboard-section');
-                    if (sectionElement) {
-                        sectionElement.style.display = 'block';
+                // Stop any currently playing sound
+                if (currentSource) {
+                    currentSource.stop();
+                    if (currentSoundButton) {
+                        currentSoundButton.classList.remove('playing');
+                        currentSoundButton.querySelector('i').className = 'fas fa-play';
                     }
                 }
-            });
-            
-            if (!hasResults) {
-                // Create or show no results message
-                let noResultsMsg = document.getElementById('no-results-message');
-                if (!noResultsMsg) {
-                    noResultsMsg = document.createElement('div');
-                    noResultsMsg.id = 'no-results-message';
-                    noResultsMsg.className = 'error-message';
-                    noResultsMsg.innerHTML = `<i class="fas fa-search"></i> No sounds found matching "${searchTerm}"`;
-                    container.prepend(noResultsMsg);
-                } else {
-                    noResultsMsg.innerHTML = `<i class="fas fa-search"></i> No sounds found matching "${searchTerm}"`;
-                    noResultsMsg.style.display = 'block';
+                
+                // Load the audio buffer
+                const buffer = await loadSound(url);
+                currentBuffer = buffer;
+                
+                // Create source and gain nodes
+                const source = audioContext.createBufferSource();
+                source.buffer = buffer;
+                
+                const gainNode = audioContext.createGain();
+                gainNode.gain.value = currentVolume;
+                
+                // Connect nodes
+                source.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Store references
+                currentSource = source;
+                currentGainNode = gainNode;
+                currentSoundButton = button;
+                currentSoundUrl = url;
+                currentSoundName = name;
+                
+                // Set button state
+                button.classList.add('playing');
+                button.querySelector('i').className = 'fas fa-pause';
+                
+                // Start playback
+                source.start(0);
+                startTime = audioContext.currentTime;
+                pausedAt = 0;
+                isPlaying = true;
+                
+                // Update player UI
+                updatePlayerUI();
+                
+                // Show player
+                audioPlayer.style.display = 'block';
+                
+                // Update play/pause button
+                playPauseButton.querySelector('i').className = 'fas fa-pause';
+                
+                // Handle source end
+                source.onended = function() {
+                    isPlaying = false;
+                    button.classList.remove('playing');
+                    button.querySelector('i').className = 'fas fa-play';
+                    playPauseButton.querySelector('i').className = 'fas fa-play';
+                    
+                    // Automatically play next sound if available
+                    if (currentPlaylistIndex < currentPlaylist.length - 1) {
+                        playNext();
+                    }
+                };
+                
+                // Set up progress tracker
+                startProgressTracker();
+                
+                // Update playlist position
+                if (currentPlaylist.length > 0) {
+                    currentPlaylistIndex = currentPlaylist.findIndex(item => item.url === url);
                 }
-            } else {
-                // Hide no results message if exists
-                const noResultsMsg = document.getElementById('no-results-message');
-                if (noResultsMsg) {
-                    noResultsMsg.style.display = 'none';
+                
+            } catch (error) {
+                console.error('Error playing sound:', error);
+            }
+        }
+
+        // Pause current sound
+        function pauseSound() {
+            if (currentSource && isPlaying) {
+                currentSource.stop();
+                pausedAt = audioContext.currentTime - startTime;
+                isPlaying = false;
+                
+                currentSoundButton.classList.remove('playing');
+                currentSoundButton.querySelector('i').className = 'fas fa-play';
+                playPauseButton.querySelector('i').className = 'fas fa-play';
+            }
+        }
+
+        // Resume paused sound
+        async function resumeSound() {
+            if (currentBuffer && !isPlaying) {
+                initAudioContext();
+                
+                // Resume audio context if suspended
+                if (audioContext.state === 'suspended') {
+                    await audioContext.resume();
+                }
+                
+                const source = audioContext.createBufferSource();
+                source.buffer = currentBuffer;
+                
+                const gainNode = audioContext.createGain();
+                gainNode.gain.value = currentVolume;
+                
+                source.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                currentSource = source;
+                currentGainNode = gainNode;
+                
+                source.start(0, pausedAt);
+                startTime = audioContext.currentTime - pausedAt;
+                isPlaying = true;
+                
+                currentSoundButton.classList.add('playing');
+                currentSoundButton.querySelector('i').className = 'fas fa-pause';
+                playPauseButton.querySelector('i').className = 'fas fa-pause';
+                
+                source.onended = function() {
+                    isPlaying = false;
+                    currentSoundButton.classList.remove('playing');
+                    currentSoundButton.querySelector('i').className = 'fas fa-play';
+                    playPauseButton.querySelector('i').className = 'fas fa-play';
+                    
+                    // Automatically play next sound if available
+                    if (currentPlaylistIndex < currentPlaylist.length - 1) {
+                        playNext();
+                    }
+                };
+                
+                startProgressTracker();
+            }
+        }
+
+        // Toggle play/pause
+        function togglePlayPause() {
+            if (isPlaying) {
+                pauseSound();
+            } else if (currentBuffer) {
+                resumeSound();
+            }
+        }
+
+        // Start progress tracker
+        function startProgressTracker() {
+            if (progressTracker) {
+                clearInterval(progressTracker);
+            }
+            
+            progressTracker = setInterval(updateProgress, 100);
+        }
+
+        // Update progress bar and time display
+        function updateProgress() {
+            if (currentBuffer && isPlaying) {
+                const elapsed = audioContext.currentTime - startTime;
+                const duration = currentBuffer.duration;
+                const percentage = (elapsed / duration) * 100;
+                
+                progressBar.style.width = `${Math.min(percentage, 100)}%`;
+                currentTimeEl.textContent = formatTime(elapsed);
+                totalTimeEl.textContent = formatTime(duration);
+                
+                if (elapsed >= duration) {
+                    clearInterval(progressTracker);
                 }
             }
         }
 
-        searchButton.addEventListener('click', performSearch);
-        searchInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') {
-                performSearch();
+        // Update volume
+        function updateVolume(value) {
+            currentVolume = value;
+            
+            if (currentGainNode) {
+                currentGainNode.gain.value = value;
             }
-        });
+            
+            volumeLevel.style.width = `${value * 100}%`;
+            
+            // Update volume icon
+            if (value === 0) {
+                volumeButton.querySelector('i').className = 'fas fa-volume-mute';
+                isMuted = true;
+            } else if (value < 0.5) {
+                volumeButton.querySelector('i').className = 'fas fa-volume-down';
+                isMuted = false;
+            } else {
+                volumeButton.querySelector('i').className = 'fas fa-volume-up';
+                isMuted = false;
+            }
+        }
 
-        // Stop button functionality
-        stopButton.addEventListener('click', () => {
-            if (currentSource) {
-                currentSource.stop();
-                currentSource = null;
-                
-                if (currentSoundButton) {
-                    currentSoundButton.classList.remove('playing');
-                    currentSoundButton.innerHTML = `<i class="fas fa-play"></i> <span>${currentSoundButton.dataset.name}</span>`;
-                    currentSoundButton = null;
+        // Toggle mute
+        function toggleMute() {
+            if (isMuted) {
+                updateVolume(0.7); // Default volume
+            } else {
+                updateVolume
+                updateVolume(0);
+            }
+        }
+
+        // Play next sound in playlist
+        function playNext() {
+            if (currentPlaylist.length > 0 && currentPlaylistIndex < currentPlaylist.length - 1) {
+                currentPlaylistIndex++;
+                const nextSound = currentPlaylist[currentPlaylistIndex];
+                playSound(nextSound.url, nextSound.button, nextSound.name);
+            }
+        }
+
+        // Play previous sound in playlist
+        function playPrevious() {
+            if (currentPlaylist.length > 0 && currentPlaylistIndex > 0) {
+                currentPlaylistIndex--;
+                const prevSound = currentPlaylist[currentPlaylistIndex];
+                playSound(prevSound.url, prevSound.button, prevSound.name);
+            }
+        }
+
+        // Update player UI
+        function updatePlayerUI() {
+            playerTitle.textContent = currentSoundName;
+            
+            if (currentBuffer) {
+                totalTimeEl.textContent = formatTime(currentBuffer.duration);
+            }
+        }
+
+        // Seek to position
+        function seekTo(position) {
+            if (currentBuffer) {
+                if (isPlaying) {
+                    currentSource.stop();
                 }
                 
-                currentlyPlaying.style.display = 'none';
+                const duration = currentBuffer.duration;
+                const seekPosition = duration * position;
+                
+                const source = audioContext.createBufferSource();
+                source.buffer = currentBuffer;
+                
+                const gainNode = audioContext.createGain();
+                gainNode.gain.value = currentVolume;
+                
+                source.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                currentSource = source;
+                currentGainNode = gainNode;
+                
+                source.start(0, seekPosition);
+                startTime = audioContext.currentTime - seekPosition;
+                isPlaying = true;
+                
+                source.onended = function() {
+                    isPlaying = false;
+                    if (currentSoundButton) {
+                        currentSoundButton.classList.remove('playing');
+                        currentSoundButton.querySelector('i').className = 'fas fa-play';
+                    }
+                    playPauseButton.querySelector('i').className = 'fas fa-play';
+                    
+                    // Automatically play next sound if available
+                    if (currentPlaylistIndex < currentPlaylist.length - 1) {
+                        playNext();
+                    }
+                };
+                
+                if (currentSoundButton) {
+                    currentSoundButton.classList.add('playing');
+                    currentSoundButton.querySelector('i').className = 'fas fa-pause';
+                }
+                playPauseButton.querySelector('i').className = 'fas fa-pause';
             }
-        });
+        }
 
-        // Back to top functionality
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
+        // Cache for loaded sound buffers
+        const soundCache = new Map();
+        let progressTracker = null;
+
+        // Load JSON file with sound data
+        async function loadSounds(section) {
+            const sectionDiv = document.getElementById(`soundboard_${section.folder}`);
+            sectionDiv.innerHTML = `<div class="section-loading"><div class="loader"></div></div>`;
+            
+            try {
+                const response = await fetch(`sounds/${section.folder}/sounds.json`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                displaySounds(data, section);
+                
+            } catch (error) {
+                console.error(`Error loading sounds for ${section.name}:`, error);
+                sectionDiv.innerHTML = `
+                    <div class="error-message">
+                        Error loading sounds for this section. Please try again later.
+                    </div>
+                `;
             }
-        });
+        }
 
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+        // Display sounds in the soundboard section
+        function displaySounds(data, section) {
+            const sectionDiv = document.getElementById(`soundboard_${section.folder}`);
+            sectionDiv.innerHTML = '';
+            
+            if (!data || data.length === 0) {
+                sectionDiv.innerHTML = '<p>No sounds available in this section.</p>';
+                return;
+            }
+            
+            // Sort sounds alphabetically by name
+            data.sort((a, b) => a.name.localeCompare(b.name));
+            
+            // Add to all sounds array for search
+            data.forEach(sound => {
+                sound.section = section.name;
+                sound.sectionFolder = section.folder;
+                allSounds.push(sound);
             });
-        });
-
-        // Theme toggle functionality
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
             
-            // Update icon
-            const icon = themeToggle.querySelector('i');
-            if (document.body.classList.contains('light-mode')) {
-                icon.className = 'fas fa-sun';
-            } else {
-                icon.className = 'fas fa-moon';
+            // Create sound buttons
+            data.forEach(sound => {
+                const soundUrl = `sounds/${section.folder}/${sound.file}`;
+                
+                const soundItem = document.createElement('div');
+                soundItem.className = 'sound-item';
+                
+                const soundButton = document.createElement('button');
+                soundButton.className = 'sound-button';
+                soundButton.innerHTML = `
+                    <i class="fas fa-play"></i>
+                    <span>${sound.name}</span>
+                    <i class="fas fa-download download-button"></i>
+                `;
+                
+                soundItem.appendChild(soundButton);
+                
+                // Add download button separately
+                const downloadLink = document.createElement('a');
+                downloadLink.href = soundUrl;
+                downloadLink.className = 'download-button';
+                downloadLink.download = sound.file;
+                downloadLink.innerHTML = `<i class="fas fa-download"></i> Download`;
+                soundItem.appendChild(downloadLink);
+                
+                sectionDiv.appendChild(soundItem);
+                
+                // Add play sound functionality
+                soundButton.addEventListener('click', function(e) {
+                    // Prevent triggering download when clicking the play button
+                    if (e.target.classList.contains('download-button')) {
+                        e.stopPropagation();
+                        return;
+                    }
+                    
+                    if (currentSoundButton === this && isPlaying) {
+                        pauseSound();
+                    } else if (currentSoundButton === this && !isPlaying) {
+                        resumeSound();
+                    } else {
+                        // Generate playlist from this section
+                        currentPlaylist = data.map(item => {
+                            const btn = document.querySelector(`#soundboard_${section.folder} .sound-button span`).parentElement;
+                            return {
+                                url: `sounds/${section.folder}/${item.file}`,
+                                name: item.name,
+                                button: btn
+                            };
+                        });
+                        currentPlaylistIndex = data.findIndex(item => item.name === sound.name);
+                        
+                        playSound(soundUrl, this, sound.name);
+                    }
+                });
+                
+                // Prevent download button from triggering play
+                soundButton.querySelector('.download-button').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    window.open(soundUrl, '_blank');
+                });
+            });
+        }
+
+        // Handle search function
+        function handleSearch() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            
+            if (searchTerm === '') {
+                // Reset to showing all sections
+                document.querySelectorAll('.soundboard-section').forEach(section => {
+                    section.style.display = 'block';
+                });
+                
+                // Clear any search results
+                const searchResultsSection = document.getElementById('search_results');
+                if (searchResultsSection) {
+                    searchResultsSection.remove();
+                }
+                
+                return;
             }
             
-            // Save preference
-            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-        });
+            // Hide all standard sections
+            document.querySelectorAll('.soundboard-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Remove previous search results if exist
+            const existingResults = document.getElementById('search_results');
+            if (existingResults) {
+                existingResults.remove();
+            }
+            
+            // Create search results section
+            const searchResultsSection = document.createElement('div');
+            searchResultsSection.className = 'soundboard-section';
+            searchResultsSection.id = 'search_results';
+            searchResultsSection.innerHTML = `
+                <h2>Search Results for "${searchTerm}"</h2>
+                <div id="search_results_grid" class="sound-grid"></div>
+            `;
+            
+            container.insertBefore(searchResultsSection, container.firstChild);
+            
+            const resultsGrid = document.getElementById('search_results_grid');
+            
+            // Filter sounds by search term
+            const results = allSounds.filter(sound => 
+                sound.name.toLowerCase().includes(searchTerm)
+            );
+            
+            if (results.length === 0) {
+                resultsGrid.innerHTML = '<p>No sounds matching your search.</p>';
+                return;
+            }
+            
+            // Create results playlist
+            const searchPlaylist = results.map(sound => {
+                const soundUrl = `sounds/${sound.sectionFolder}/${sound.file}`;
+                
+                const soundItem = document.createElement('div');
+                soundItem.className = 'sound-item';
+                
+                const soundButton = document.createElement('button');
+                soundButton.className = 'sound-button';
+                soundButton.innerHTML = `
+                    <i class="fas fa-play"></i>
+                    <span>${sound.name}</span>
+                    <small>(${sound.section})</small>
+                    <i class="fas fa-download download-button"></i>
+                `;
+                
+                soundItem.appendChild(soundButton);
+                
+                // Add download button
+                const downloadLink = document.createElement('a');
+                downloadLink.href = soundUrl;
+                downloadLink.className = 'download-button';
+                downloadLink.download = sound.file;
+                downloadLink.innerHTML = `<i class="fas fa-download"></i> Download`;
+                soundItem.appendChild(downloadLink);
+                
+                resultsGrid.appendChild(soundItem);
+                
+                // Add play sound functionality
+                soundButton.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('download-button')) {
+                        e.stopPropagation();
+                        return;
+                    }
+                    
+                    if (currentSoundButton === this && isPlaying) {
+                        pauseSound();
+                    } else if (currentSoundButton === this && !isPlaying) {
+                        resumeSound();
+                    } else {
+                        // Set up search results playlist
+                        currentPlaylist = results.map(item => {
+                            return {
+                                url: `sounds/${item.sectionFolder}/${item.file}`,
+                                name: item.name,
+                                button: this
+                            };
+                        });
+                        currentPlaylistIndex = results.findIndex(item => item.name === sound.name);
+                        
+                        playSound(soundUrl, this, sound.name);
+                    }
+                });
+                
+                // Prevent download button from triggering play
+                soundButton.querySelector('.download-button').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    window.open(soundUrl, '_blank');
+                });
+                
+                return {
+                    url: soundUrl,
+                    name: sound.name,
+                    button: soundButton
+                };
+            });
+            
+            // Update current playlist with search results
+            currentPlaylist = searchPlaylist;
+        }
 
-        // Load saved theme preference
-        document.addEventListener('DOMContentLoaded', () => {
+        // Initialize the soundboard
+        function init() {
+            // Load sounds for each section
+            sections.forEach(section => {
+                loadSounds(section);
+            });
+
+            // Search functionality
+            searchButton.addEventListener('click', handleSearch);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleSearch();
+                }
+            });
+
+            // Navigation menu click handler
+            navMenu.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    // Remove active class from all links
+                    document.querySelectorAll('.nav-menu a').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked link
+                    e.target.classList.add('active');
+                    
+                    // Close sidebar on mobile
+                    if (window.innerWidth < 992) {
+                        sidebar.classList.remove('active');
+                    }
+                }
+            });
+
+            // Player controls
+            playPauseButton.addEventListener('click', togglePlayPause);
+            nextButton.addEventListener('click', playNext);
+            prevButton.addEventListener('click', playPrevious);
+            
+            // Progress bar click
+            progressContainer.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const clickPosition = (e.clientX - rect.left) / rect.width;
+                seekTo(clickPosition);
+            });
+            
+            // Volume controls
+            volumeButton.addEventListener('click', toggleMute);
+            volumeSlider.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const clickPosition = (e.clientX - rect.left) / rect.width;
+                updateVolume(clickPosition);
+            });
+            
+            // Back to top button
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+            
+            backToTop.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Theme toggle
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('light-mode');
+                
+                if (document.body.classList.contains('light-mode')) {
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+            
+            // Check for saved theme preference
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'light') {
                 document.body.classList.add('light-mode');
-                themeToggle.querySelector('i').className = 'fas fa-sun';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             }
             
-            // Initialize the external soundboard setup
-            // We override the default DOMContentLoaded handler by calling setupSoundboard ourselves
-            if (typeof window.setupSoundboard === 'function') {
-                window.setupSoundboard();
-            }
-        });
+            // Sidebar toggle
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+            
+            // Close sidebar when clicking outside
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth < 992 && 
+                    sidebar.classList.contains('active') && 
+                    !sidebar.contains(e.target) && 
+                    e.target !== sidebarToggle) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize when DOM content is loaded
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
