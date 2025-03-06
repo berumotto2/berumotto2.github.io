@@ -24,10 +24,10 @@
         body {
             background-color: var(--dark-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
             color: white;
-            overflow-x: hidden;
         }
 
         header {
@@ -36,7 +36,6 @@
             top: 0;
             background-color: var(--dark-bg);
             z-index: 100;
-            width: 100%;
         }
 
         h1 {
@@ -46,8 +45,7 @@
             background-color: var(--primary-color);
             border: 3px solid var(--secondary-color);
             padding: 15px;
-            margin: 0 auto 20px;
-            max-width: 1200px;
+            margin-bottom: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             font-size: 2rem;
         }
@@ -62,29 +60,12 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .main-container {
-            display: flex;
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .content-container {
-            flex: 1;
-            padding: 20px;
-            transition: margin-left 0.3s ease;
-            margin-left: 240px; /* Added to account for the fixed side navigation */
-        }
-
-        .top-nav-container {
+        .nav-container {
             position: sticky;
             top: 0;
             background-color: var(--dark-bg);
             padding: 10px 0;
             z-index: 99;
-            margin-bottom: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
         }
 
         .search-container {
@@ -140,72 +121,12 @@
             border: 2px solid var(--secondary-color);
             transition: all 0.3s ease;
             font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
         }
 
         .nav-menu a:hover {
             background-color: var(--hover-color);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Side navigation - always visible and sticky */
-        /* Make the side navigation always visible and sticky */
-        .side-nav {
-            width: 220px;
-            position: fixed;
-            top: 20px;
-            height: calc(100vh - 20px);
-            overflow-y: auto;
-            background-color: var(--darker-bg);
-            border-right: 3px solid var(--secondary-color);
-            transition: width 0.3s ease;
-            z-index: 90;
-            padding: 15px;
-            border-radius: 0 7px 7px 0;
-            margin-top: 20px;
-            opacity: 1; /* Ensure it's always visible */
-        }
-
-        /* Adjust the content container to account for the fixed side navigation */
-        .content-container {
-            margin-left: 240px; /* Add margin to avoid overlap with the side navigation */
-            transition: margin-left 0.3s ease;
-        }
-
-        .side-nav a {
-            display: block;
-            padding: 10px;
-            background-color: var(--primary-color);
-            color: var(--text-color);
-            margin-bottom: 5px;
-            text-decoration: none;
-            border-radius: 5px;
-            border: 2px solid var(--secondary-color);
-            opacity: 1;
-            transition: opacity 0.3s ease;
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .side-nav a:hover {
-            background-color: var(--hover-color);
-        }
-
-        .side-nav::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .side-nav::-webkit-scrollbar-track {
-            background: var(--darker-bg);
-        }
-
-        .side-nav::-webkit-scrollbar-thumb {
-            background-color: var(--secondary-color);
-            border-radius: 4px;
         }
 
         .soundboard-section {
@@ -225,17 +146,18 @@
 
         .sound-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
 
         .sound-item {
+            display: flex;
+            flex-direction: column;
             background-color: rgba(255, 255, 255, 0.05);
             border-radius: 7px;
-            padding: 15px;
+            padding: 10px;
             transition: all 0.3s ease;
-            position: relative;
         }
 
         .sound-item:hover {
@@ -244,50 +166,65 @@
         }
 
         .sound-button {
-            font-size: 16px;
-            width: 100%;
-            padding: 12px;
-            background-color: var(--primary-color);
-            border: 2px solid var(--secondary-color);
-            border-radius: 7px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-        }
+    font-size: 16px;
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    border: 2px solid var(--secondary-color);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
 
-        .sound-button i {
-            margin-right: 8px;
-        }
+.sound-button i {
+    margin-right: 8px;
+}
 
-        .sound-button:hover {
-            background-color: var(--hover-color);
-            transform: scale(1.02);
-        }
+.sound-button span {
+    flex-grow: 1;
+    text-align: left;
+    margin-right: 10px;
+}
 
-        .sound-button.playing {
+.sound-button .download-button {
+    margin-left: auto;
+    margin-right: 0;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.sound-button .download-button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+        .download-button {
+            padding: 8px 12px;
             background-color: var(--secondary-color);
             color: var(--text-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.2s ease;
+            margin-top: 8px;
         }
 
-        .download-icon {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0.7;
-            transition: opacity 0.2s ease;
+        .download-button i {
+            margin-right: 6px;
         }
 
-        .download-icon:hover {
-            opacity: 1;
-        }
-
-        .download-icon span {
-            display: none; /* Hide text, keep only the icon */
+        .download-button:hover {
+            background-color: #c69f60;
+            transform: translateY(-2px);
         }
 
         .error-message {
@@ -327,90 +264,23 @@
             left: 0;
             right: 0;
             background-color: var(--darker-bg);
-            padding: 15px;
+            padding: 10px;
             border-top: 2px solid var(--secondary-color);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            flex-direction: column;
         }
 
-        .sound-info {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 10px;
-            width: 100%;
-        }
-
-        .sound-info span {
-            margin: 0 10px;
+        .currently-playing span {
+            margin-right: 10px;
             color: white;
             font-weight: bold;
-            flex: 1;
-            text-align: center;
-        }
-
-        .player-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 5px;
-            gap: 15px;
-        }
-
-        .control-button {
-            background-color: var(--primary-color);
-            color: var(--text-color);
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 2px solid var(--secondary-color);
-        }
-
-        .control-button:hover {
-            background-color: var(--hover-color);
-            transform: scale(1.1);
-        }
-
-        .progress-container {
-            width: 100%;
-            max-width: 500px;
-            margin: 10px auto;
-            background-color: var(--dark-bg);
-            border-radius: 5px;
-            overflow: hidden;
-            height: 10px;
-            position: relative;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background-color: var(--primary-color);
-            width: 0;
-            transition: width 0.1s linear;
-        }
-
-        .time-display {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 500px;
-            margin: 5px auto;
-            color: white;
-            font-size: 12px;
         }
 
         .back-to-top {
             position: fixed;
-            bottom: 80px;
+            bottom: 20px;
             right: 20px;
             background-color: var(--primary-color);
             color: var(--text-color);
@@ -436,43 +306,46 @@
             background-color: var(--hover-color);
         }
 
-        @media (max-width: 992px) {
-            .side-nav {
-                width: 0;
-                padding: 0;
-            }
-
-            .content-container {
-                margin-left: 0 !important;
-            }
-        }
-
         @media (max-width: 768px) {
             .sound-grid {
                 grid-template-columns: 1fr;
             }
-
+            
             h1 {
                 font-size: 1.5rem;
                 padding: 10px;
             }
-
+            
             .nav-menu {
                 padding: 10px;
             }
-
+            
             .nav-menu a {
                 padding: 6px 12px;
                 font-size: 14px;
             }
+        }
 
-            .currently-playing {
-                padding: 10px;
-            }
+        /* Dark mode toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-            .progress-container, .time-display {
-                max-width: 100%;
-            }
+        .theme-toggle:hover {
+            background-color: var(--hover-color);
         }
 
         /* Light mode styles */
@@ -500,7 +373,7 @@
         <h1>THE DAN GHEESLING SHOW SOUNDBOARD</h1>
     </header>
 
-    <div class="top-nav-container">
+    <div class="nav-container">
         <div class="search-container">
             <input type="text" id="search-input" placeholder="Search sounds...">
             <button id="search-button"><i class="fas fa-search"></i></button>
@@ -511,182 +384,322 @@
         </nav>
     </div>
 
-    <div class="main-container">
-        <div class="side-nav" id="side-nav">
-            <!-- Section links will be duplicated here for side navigation -->
-        </div>
-
-        <div class="content-container" id="content-container">
-            <div id="soundboard-container">
-                <!-- Soundboard sections will be dynamically inserted here -->
-            </div>
-        </div>
+    <div id="soundboard-container">
+        <!-- Soundboard sections will be dynamically inserted here -->
     </div>
 
     <div class="currently-playing" id="currently-playing">
-        <div class="sound-info">
-            <span id="current-sound-name"></span>
-        </div>
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        <div class="time-display">
-            <span id="current-time">0:00</span>
-            <span id="total-time">0:00</span>
-        </div>
-        <div class="player-controls">
-            <button class="control-button" id="rewind-button">
-                <i class="fas fa-backward"></i>
-            </button>
-            <button class="control-button" id="play-pause-button">
-                <i class="fas fa-pause"></i>
-            </button>
-            <button class="control-button" id="stop-button">
-                <i class="fas fa-stop"></i>
-            </button>
-        </div>
+        <span>Now Playing: </span>
+        <span id="current-sound-name"></span>
+        <button id="stop-button" style="margin-left: 10px; padding: 5px 10px; background-color: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer;">
+            <i class="fas fa-stop"></i> Stop
+        </button>
     </div>
 
     <div class="back-to-top" id="back-to-top">
         <i class="fas fa-arrow-up"></i>
     </div>
 
-    <!-- Load external script files -->
-    <script src="player.js"></script>
-    <script src="search.js"></script>
-    <script src="navigation.js"></script>
+    <!-- Load external script file -->
     <script src="soundboard.js"></script>
-
-    <script type="module">
-        // Import functions from external modules
-        import { playSound, pauseSound, resumeSound, stopSound, setVolume } from './player.js';
-        import { performSearch, debounce } from './search.js';
-        import { setupNavigation } from './navigation.js';
     
+    <script>
         // Initialize variables for UI functionality
         const sections = [
-            { name: "ADS", folder: "ads" },
-            { name: "APOLLO", folder: "apollo" },
-            { name: "CELEBS", folder: "celebs" },
-            { name: "COBALT", folder: "cobalt" },
-            { name: "DAN", folder: "dan", note: "(the one rule of the sound board)" },
-            { name: "Dr. Ulden Wascht & Co", folder: "dr_u" },
-            { name: "FLIGHT REACTS", folder: "flight_reacts", note: "(lower your volume before playing)" },
-            { name: "GAMING", folder: "gaming" },
-            { name: "HOB", folder: "hob" },
-            { name: "MALF", folder: "malf" },
-            { name: "MOVIES", folder: "movies" },
-            { name: "MUSIC", folder: "music" },
-            { name: "NL - Ryan Gary", folder: "nl_ryan_gary" },
-            { name: "MISC NOISES", folder: "misc_noises" },
-            { name: "SKIP BAYLESS", folder: "skip_bayless" },
-            { name: "SPORTS", folder: "sports", note: "(mostly football KKona)" },
-            { name: "SQUEEX", folder: "squeex" },
-            { name: "STREAMERS", folder: "streamers" },
-            { name: "TCG", folder: "tcg" },
-            { name: "TIK TOK & VINES", folder: "tiktok_vines" },
-            { name: "TV", folder: "tv" },
-            { name: "WWE", folder: "wwe" },
-            { name: "YOUTUBE", folder: "youtube" }
+            {name: "ADS", folder: "ads"},
+            {name: "APOLLO", folder: "apollo"},
+            {name: "CELEBS", folder: "celebs"},
+            {name: "COBALT", folder: "cobalt"},
+            {name: "DAN", folder: "dan", note: "(the one rule of the sound board)"},
+            {name: "Dr. Ulden Wascht & Co", folder: "dr_u"},
+            {name: "FLIGHT REACTS", folder: "flight_reacts", note: "(lower your volume before playing)"},
+            {name: "GAMING", folder: "gaming"},
+            {name: "HOB", folder: "hob"},
+            {name: "MALF", folder: "malf"},
+            {name: "MOVIES", folder: "movies"},
+            {name: "MUSIC", folder: "music"},
+            {name: "NL - Ryan Gary", folder: "nl_ryan_gary"},
+            {name: "MISC NOISES", folder: "misc_noises"},
+            {name: "SKIP BAYLESS", folder: "skip_bayless"},
+            {name: "SPORTS", folder: "sports", note: "(mostly football KKona)"},
+            {name: "SQUEEX", folder: "squeex"},
+            {name: "STREAMERS", folder: "streamers"},
+            {name: "TCG", folder: "tcg"},
+            {name: "TIK TOK & VINES", folder: "tiktok_vines"},
+            {name: "TV", folder: "tv"},
+            {name: "WWE", folder: "wwe"},
+            {name: "YOUTUBE", folder: "youtube"}
         ];
-    
-        const allSounds = []; // Track all sounds for search functionality
-    
-        // Initialize navigation
-        setupNavigation(sections);
-    
-        // Override the createSoundButton function from soundboard.js
-        window.createSoundButton = function (item, container) {
-            const soundName = item.name.replace('.mp3', '').replace(/_/g, ' ');
-            const soundItem = document.createElement('div');
-            soundItem.className = 'sound-item';
-            soundItem.dataset.name = soundName.toLowerCase();
-            soundItem.dataset.url = item.download_url;
-    
-            const button = document.createElement('button');
-            button.className = 'sound-button';
-            button.innerHTML = `
-                <i class="fas fa-play"></i> 
-                <span>${soundName}</span>
-                <i class="fas fa-download download-button" title="Download ${soundName}"></i>
-            `;
-            button.dataset.url = item.download_url;
-            button.dataset.name = soundName;
-    
-            // Play sound on click
-            button.addEventListener('click', function (e) {
-                if (e.target.classList.contains('download-button') || e.target.closest('.download-button')) {
-                    e.stopPropagation();
-                    // Trigger download
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = item.download_url;
-                    downloadLink.download = `${soundName}.mp3`;
-                    document.body.appendChild(downloadLink);
-                    downloadLink.click();
-                    document.body.removeChild(downloadLink);
-                    return;
-                }
-    
-                if (currentSource && currentSoundButton === this && isPlaying) {
-                    pauseSound();
-                } else if (currentSource && currentSoundButton === this && !isPlaying) {
-                    resumeSound();
-                } else {
-                    playSound(this.dataset.url, this, this.dataset.name);
-                }
-            });
-    
-            soundItem.appendChild(button);
-            container.appendChild(soundItem);
-    
-            // Add to global sounds list for search
-            allSounds.push({
-                element: soundItem,
-                name: soundName.toLowerCase(),
-                section: container.id
-            });
-        };
-    
-        // Setup search functionality
+
+        const container = document.getElementById('soundboard-container');
+        const navMenu = document.getElementById('nav-menu');
         const searchInput = document.getElementById('search-input');
         const searchButton = document.getElementById('search-button');
-        const debouncedSearch = debounce(() => performSearch(allSounds, searchInput.value.toLowerCase().trim()), 300);
-    
-        searchButton.addEventListener('click', debouncedSearch);
-        searchInput.addEventListener('keyup', debouncedSearch);
-    
-        // Setup volume control
-        const volumeSlider = document.createElement('input');
-        volumeSlider.type = 'range';
-        volumeSlider.min = 0;
-        volumeSlider.max = 1;
-        volumeSlider.step = 0.1;
-        volumeSlider.value = 1;
-        volumeSlider.addEventListener('input', () => setVolume(volumeSlider.value));
-        document.getElementById('currently-playing').appendChild(volumeSlider);
-    
-        // Initialize the soundboard setup from soundboard.js
-        if (typeof window.setupSoundboard === 'function') {
-            window.setupSoundboard();
-        }
-    
-        // Add event listeners for player controls
-        const playPauseButton = document.getElementById('play-pause-button');
+        const currentlyPlaying = document.getElementById('currently-playing');
+        const currentSoundName = document.getElementById('current-sound-name');
         const stopButton = document.getElementById('stop-button');
+        const backToTop = document.getElementById('back-to-top');
+        const themeToggle = document.getElementById('theme-toggle');
+
+        // Track all sounds for search functionality
+        const allSounds = [];
+        
+        // References for currently playing sound
+        let currentSource = null;
+        let currentSoundButton = null;
+
+        // Create navigation menu first
+        sections.forEach(section => {
+            const link = document.createElement('a');
+            link.href = `#section_${section.folder}`;
+            link.textContent = section.name;
+            navMenu.appendChild(link);
+
+            // Create section containers
+            const div = document.createElement('div');
+            div.className = 'soundboard-section';
+            div.id = `section_${section.folder}`;
+            div.innerHTML = `
+                <h2>${section.name}${section.note ? ' ' + section.note : ''}</h2>
+                <div id="soundboard_${section.folder}" class="sound-grid"></div>
+            `;
+            container.appendChild(div);
+        });
+
+       // Override the createSoundButton function from external JS to use our UI
+window.createSoundButton = function(item, container) {
+    const sectionId = container.id;
+    const soundName = item.name.replace('.mp3', '').replace(/_/g, ' ');
     
-        playPauseButton.addEventListener('click', () => {
-            if (isPlaying) {
-                pauseSound();
-                playPauseButton.innerHTML = `<i class="fas fa-play"></i>`;
+    const soundItem = document.createElement('div');
+    soundItem.className = 'sound-item';
+    soundItem.dataset.name = soundName.toLowerCase();
+    soundItem.dataset.url = item.download_url;
+    
+    const button = document.createElement('button');
+    button.className = 'sound-button';
+    button.innerHTML = `
+        <i class="fas fa-play"></i> 
+        <span>${soundName}</span>
+        <i class="fas fa-download download-button" title="Download ${soundName}"></i>
+    `;
+    button.dataset.url = item.download_url;
+    button.dataset.name = soundName;
+    
+    // Play sound on click
+    button.addEventListener('click', function(e) {
+        // Handle download click
+        if (e.target.classList.contains('download-button') || e.target.closest('.download-button')) {
+            e.stopPropagation();
+            // Create and trigger download
+            const downloadLink = document.createElement('a');
+            downloadLink.href = item.download_url;
+            downloadLink.download = `${soundName}.mp3`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            return;
+        }
+        
+        // Handle play button functionality
+        if (currentSource && currentSoundButton === this && isPlaying) {
+            pauseSound();
+        } else if (currentSource && currentSoundButton === this && !isPlaying) {
+            resumeSound();
+        } else {
+            playSound(this.dataset.url, this, this.dataset.name);
+        }
+    });
+    
+    soundItem.appendChild(button);
+    container.appendChild(soundItem);
+    
+    // Add to global sounds list for search
+    allSounds.push({
+        element: soundItem,
+        name: soundName.toLowerCase(),
+        section: sectionId
+    });
+};
+
+        // Override setupSoundboard to use our section structure
+        window.setupSoundboard = async function() {
+            try {
+                for (const section of sections) {
+                    const sectionElement = document.getElementById(`soundboard_${section.folder}`);
+                    
+                    // Show loading indicator
+                    const loadingDiv = document.createElement('div');
+                    loadingDiv.className = 'section-loading';
+                    loadingDiv.innerHTML = '<div class="loader"></div>';
+                    sectionElement.appendChild(loadingDiv);
+                    
+                    try {
+                        // Use the external fetchGitHubDirectory function
+                        const contents = await fetchGitHubDirectory(`sounds/${section.folder}`);
+                        
+                        // Remove loading indicator
+                        sectionElement.removeChild(loadingDiv);
+                        
+                        if (contents && contents.length > 0) {
+                            // Filter for MP3 files and create buttons
+                            const mp3Files = contents.filter(file => file.name.toLowerCase().endsWith('.mp3'));
+                            
+                            if (mp3Files.length > 0) {
+                                mp3Files.forEach(file => {
+                                    createSoundButton(file, sectionElement);
+                                });
+                            } else {
+                                const noSoundsMsg = document.createElement('p');
+                                noSoundsMsg.textContent = 'No sounds found in this section.';
+                                sectionElement.appendChild(noSoundsMsg);
+                            }
+                        }
+                    } catch (error) {
+                        console.error(`Error loading section ${section.name}:`, error);
+                        sectionElement.removeChild(loadingDiv);
+                        
+                        const errorMessage = document.createElement('div');
+                        errorMessage.className = 'error-message';
+                        errorMessage.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Failed to load sounds for ${section.name}. ${error.message}`;
+                        sectionElement.appendChild(errorMessage);
+                    }
+                }
+            } catch (error) {
+                console.error('Error setting up soundboard:', error);
+            }
+        };
+
+        // Search functionality
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                // Show all sections if search is empty
+                document.querySelectorAll('.soundboard-section').forEach(section => {
+                    section.style.display = 'block';
+                });
+                
+                // Reset all sound items
+                allSounds.forEach(sound => {
+                    sound.element.style.display = 'flex';
+                });
+                
+                return;
+            }
+            
+            // Hide all sections initially
+            document.querySelectorAll('.soundboard-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Filter sounds and show matching sections
+            let hasResults = false;
+            
+            allSounds.forEach(sound => {
+                const matches = sound.name.toLowerCase().includes(searchTerm);
+                sound.element.style.display = matches ? 'flex' : 'none';
+                
+                if (matches) {
+                    hasResults = true;
+                    // Show the parent section
+                    const sectionElement = sound.element.closest('.soundboard-section');
+                    if (sectionElement) {
+                        sectionElement.style.display = 'block';
+                    }
+                }
+            });
+            
+            if (!hasResults) {
+                // Create or show no results message
+                let noResultsMsg = document.getElementById('no-results-message');
+                if (!noResultsMsg) {
+                    noResultsMsg = document.createElement('div');
+                    noResultsMsg.id = 'no-results-message';
+                    noResultsMsg.className = 'error-message';
+                    noResultsMsg.innerHTML = `<i class="fas fa-search"></i> No sounds found matching "${searchTerm}"`;
+                    container.prepend(noResultsMsg);
+                } else {
+                    noResultsMsg.innerHTML = `<i class="fas fa-search"></i> No sounds found matching "${searchTerm}"`;
+                    noResultsMsg.style.display = 'block';
+                }
             } else {
-                resumeSound();
-                playPauseButton.innerHTML = `<i class="fas fa-pause"></i>`;
+                // Hide no results message if exists
+                const noResultsMsg = document.getElementById('no-results-message');
+                if (noResultsMsg) {
+                    noResultsMsg.style.display = 'none';
+                }
+            }
+        }
+
+        searchButton.addEventListener('click', performSearch);
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
             }
         });
-    
+
+        // Stop button functionality
         stopButton.addEventListener('click', () => {
-            stopSound();
-            playPauseButton.innerHTML = `<i class="fas fa-play"></i>`;
+            if (currentSource) {
+                currentSource.stop();
+                currentSource = null;
+                
+                if (currentSoundButton) {
+                    currentSoundButton.classList.remove('playing');
+                    currentSoundButton.innerHTML = `<i class="fas fa-play"></i> <span>${currentSoundButton.dataset.name}</span>`;
+                    currentSoundButton = null;
+                }
+                
+                currentlyPlaying.style.display = 'none';
+            }
+        });
+
+        // Back to top functionality
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Theme toggle functionality
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            
+            // Update icon
+            const icon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('light-mode')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+            
+            // Save preference
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        });
+
+        // Load saved theme preference
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                themeToggle.querySelector('i').className = 'fas fa-sun';
+            }
+            
+            // Initialize the external soundboard setup
+            // We override the default DOMContentLoaded handler by calling setupSoundboard ourselves
+            if (typeof window.setupSoundboard === 'function') {
+                window.setupSoundboard();
+            }
         });
     </script>
 </body>
