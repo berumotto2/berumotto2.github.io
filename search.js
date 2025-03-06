@@ -25,6 +25,14 @@ export function performSearch(sounds, searchTerm) {
             if (sectionElement) {
                 sectionElement.style.display = 'block';
             }
+
+            // Highlight the search term in the sound name
+            const soundNameElement = sound.element.querySelector('span');
+            if (soundNameElement) {
+                const soundName = soundNameElement.textContent;
+                const highlightedName = soundName.replace(new RegExp(searchTerm, 'gi'), match => `<span class="highlight">${match}</span>`);
+                soundNameElement.innerHTML = highlightedName;
+            }
         }
     });
 

@@ -551,7 +551,10 @@
         <i class="fas fa-arrow-up"></i>
     </div>
 
-    <!-- Load external script file -->
+    <!-- Load external script files -->
+    <script src="player.js"></script>
+    <script src="search.js"></script>
+    <script src="navigation.js"></script>
     <script src="soundboard.js"></script>
 
     <script type="module">
@@ -559,115 +562,132 @@
         import { playSound, pauseSound, resumeSound, stopSound, setVolume } from './player.js';
         import { performSearch, debounce } from './search.js';
         import { setupNavigation } from './navigation.js';
-        
+    
         // Initialize variables for UI functionality
         const sections = [
-            {name: "ADS", folder: "ads"},
-            {name: "APOLLO", folder: "apollo"},
-            {name: "CELEBS", folder: "celebs"},
-            {name: "COBALT", folder: "cobalt"},
-            {name: "DAN", folder: "dan", note: "(the one rule of the sound board)"},
-            {name: "Dr. Ulden Wascht & Co", folder: "dr_u"},
-            {name: "FLIGHT REACTS", folder: "flight_reacts", note: "(lower your volume before playing)"},
-            {name: "GAMING", folder: "gaming"},
-            {name: "HOB", folder: "hob"},
-            {name: "MALF", folder: "malf"},
-            {name: "MOVIES", folder: "movies"},
-            {name: "MUSIC", folder: "music"},
-            {name: "NL - Ryan Gary", folder: "nl_ryan_gary"},
-            {name: "MISC NOISES", folder: "misc_noises"},
-            {name: "SKIP BAYLESS", folder: "skip_bayless"},
-            {name: "SPORTS", folder: "sports", note: "(mostly football KKona)"},
-            {name: "SQUEEX", folder: "squeex"},
-            {name: "STREAMERS", folder: "streamers"},
-            {name: "TCG", folder: "tcg"},
-            {name: "TIK TOK & VINES", folder: "tiktok_vines"},
-            {name: "TV", folder: "tv"},
-            {name: "WWE", folder: "wwe"},
-            {name: "YOUTUBE", folder: "youtube"}
+            { name: "ADS", folder: "ads" },
+            { name: "APOLLO", folder: "apollo" },
+            { name: "CELEBS", folder: "celebs" },
+            { name: "COBALT", folder: "cobalt" },
+            { name: "DAN", folder: "dan", note: "(the one rule of the sound board)" },
+            { name: "Dr. Ulden Wascht & Co", folder: "dr_u" },
+            { name: "FLIGHT REACTS", folder: "flight_reacts", note: "(lower your volume before playing)" },
+            { name: "GAMING", folder: "gaming" },
+            { name: "HOB", folder: "hob" },
+            { name: "MALF", folder: "malf" },
+            { name: "MOVIES", folder: "movies" },
+            { name: "MUSIC", folder: "music" },
+            { name: "NL - Ryan Gary", folder: "nl_ryan_gary" },
+            { name: "MISC NOISES", folder: "misc_noises" },
+            { name: "SKIP BAYLESS", folder: "skip_bayless" },
+            { name: "SPORTS", folder: "sports", note: "(mostly football KKona)" },
+            { name: "SQUEEX", folder: "squeex" },
+            { name: "STREAMERS", folder: "streamers" },
+            { name: "TCG", folder: "tcg" },
+            { name: "TIK TOK & VINES", folder: "tiktok_vines" },
+            { name: "TV", folder: "tv" },
+            { name: "WWE", folder: "wwe" },
+            { name: "YOUTUBE", folder: "youtube" }
         ];
-
-        const allSounds = []; // Track all sounds for search functionality
-
-// Initialize navigation
-setupNavigation(sections);
-
-// Override the createSoundButton function from soundboard.js
-window.createSoundButton = function(item, container) {
-    const soundName = item.name.replace('.mp3', '').replace(/_/g, ' ');
-    const soundItem = document.createElement('div');
-    soundItem.className = 'sound-item';
-    soundItem.dataset.name = soundName.toLowerCase();
-    soundItem.dataset.url = item.download_url;
-
-    const button = document.createElement('button');
-    button.className = 'sound-button';
-    button.innerHTML = `
-        <i class="fas fa-play"></i> 
-        <span>${soundName}</span>
-        <i class="fas fa-download download-button" title="Download ${soundName}"></i>
-    `;
-    button.dataset.url = item.download_url;
-    button.dataset.name = soundName;
-
-    // Play sound on click
-    button.addEventListener('click', function(e) {
-        if (e.target.classList.contains('download-button') || e.target.closest('.download-button')) {
-            e.stopPropagation();
-            // Trigger download
-            const downloadLink = document.createElement('a');
-            downloadLink.href = item.download_url;
-            downloadLink.download = `${soundName}.mp3`;
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-            return;
-        }
-
-        if (currentSource && currentSoundButton === this && isPlaying) {
-            pauseSound();
-        } else if (currentSource && currentSoundButton === this && !isPlaying) {
-            resumeSound();
-        } else {
-            playSound(this.dataset.url, this, this.dataset.name);
-        }
-    });
-
-    soundItem.appendChild(button);
-    container.appendChild(soundItem);
-
-    // Add to global sounds list for search
-    allSounds.push({
-        element: soundItem,
-        name: soundName.toLowerCase(),
-        section: container.id
-    });
-};
-
-// Setup search functionality
-const searchInput = document.getElementById('search-input');
-const searchButton = document.getElementById('search-button');
-const debouncedSearch = debounce(() => performSearch(allSounds, searchInput.value.toLowerCase().trim()), 300);
-
-searchButton.addEventListener('click', debouncedSearch);
-searchInput.addEventListener('keyup', debouncedSearch);
-
-// Setup volume control
-const volumeSlider = document.createElement('input');
-volumeSlider.type = 'range';
-volumeSlider.min = 0;
-volumeSlider.max = 1;
-volumeSlider.step = 0.1;
-volumeSlider.value = 1;
-volumeSlider.addEventListener('input', () => setVolume(volumeSlider.value));
-document.getElementById('currently-playing').appendChild(volumeSlider);
-
-// Initialize the soundboard setup from soundboard.js
-if (typeof window.setupSoundboard === 'function') {
-    window.setupSoundboard();
-}
-</script>
-
     
+        const allSounds = []; // Track all sounds for search functionality
+    
+        // Initialize navigation
+        setupNavigation(sections);
+    
+        // Override the createSoundButton function from soundboard.js
+        window.createSoundButton = function (item, container) {
+            const soundName = item.name.replace('.mp3', '').replace(/_/g, ' ');
+            const soundItem = document.createElement('div');
+            soundItem.className = 'sound-item';
+            soundItem.dataset.name = soundName.toLowerCase();
+            soundItem.dataset.url = item.download_url;
+    
+            const button = document.createElement('button');
+            button.className = 'sound-button';
+            button.innerHTML = `
+                <i class="fas fa-play"></i> 
+                <span>${soundName}</span>
+                <i class="fas fa-download download-button" title="Download ${soundName}"></i>
+            `;
+            button.dataset.url = item.download_url;
+            button.dataset.name = soundName;
+    
+            // Play sound on click
+            button.addEventListener('click', function (e) {
+                if (e.target.classList.contains('download-button') || e.target.closest('.download-button')) {
+                    e.stopPropagation();
+                    // Trigger download
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = item.download_url;
+                    downloadLink.download = `${soundName}.mp3`;
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                    return;
+                }
+    
+                if (currentSource && currentSoundButton === this && isPlaying) {
+                    pauseSound();
+                } else if (currentSource && currentSoundButton === this && !isPlaying) {
+                    resumeSound();
+                } else {
+                    playSound(this.dataset.url, this, this.dataset.name);
+                }
+            });
+    
+            soundItem.appendChild(button);
+            container.appendChild(soundItem);
+    
+            // Add to global sounds list for search
+            allSounds.push({
+                element: soundItem,
+                name: soundName.toLowerCase(),
+                section: container.id
+            });
+        };
+    
+        // Setup search functionality
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const debouncedSearch = debounce(() => performSearch(allSounds, searchInput.value.toLowerCase().trim()), 300);
+    
+        searchButton.addEventListener('click', debouncedSearch);
+        searchInput.addEventListener('keyup', debouncedSearch);
+    
+        // Setup volume control
+        const volumeSlider = document.createElement('input');
+        volumeSlider.type = 'range';
+        volumeSlider.min = 0;
+        volumeSlider.max = 1;
+        volumeSlider.step = 0.1;
+        volumeSlider.value = 1;
+        volumeSlider.addEventListener('input', () => setVolume(volumeSlider.value));
+        document.getElementById('currently-playing').appendChild(volumeSlider);
+    
+        // Initialize the soundboard setup from soundboard.js
+        if (typeof window.setupSoundboard === 'function') {
+            window.setupSoundboard();
+        }
+    
+        // Add event listeners for player controls
+        const playPauseButton = document.getElementById('play-pause-button');
+        const stopButton = document.getElementById('stop-button');
+    
+        playPauseButton.addEventListener('click', () => {
+            if (isPlaying) {
+                pauseSound();
+                playPauseButton.innerHTML = `<i class="fas fa-play"></i>`;
+            } else {
+                resumeSound();
+                playPauseButton.innerHTML = `<i class="fas fa-pause"></i>`;
+            }
+        });
+    
+        stopButton.addEventListener('click', () => {
+            stopSound();
+            playPauseButton.innerHTML = `<i class="fas fa-play"></i>`;
+        });
+    </script>
 </body>
 </html>
