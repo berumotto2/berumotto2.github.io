@@ -96,6 +96,33 @@
             margin-bottom: 10px;
             border-radius: 5px;
         }
+        .player-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #444;
+            padding: 10px;
+            text-align: center;
+            border-top: 3px solid #d7af70;
+            display: none;
+        }
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .player-controls button {
+            background-color: #f07167;
+            border: 2px solid #d7af70;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            color: #14110f;
+        }
+        .player-controls button:hover {
+            background-color: #e0e0e0;
+        }
     </style>
 </head>
 <body>
@@ -107,6 +134,14 @@
 
     <div id="soundboard-container">
         <!-- Soundboard sections will be dynamically inserted here -->
+    </div>
+
+    <!-- Player container -->
+    <div class="player-container" id="player-container">
+        <div class="player-controls">
+            <button id="play-pause-btn">Play</button>
+            <button id="stop-btn">Stop</button>
+        </div>
     </div>
 
     <script>
@@ -138,6 +173,11 @@
 
         const container = document.getElementById('soundboard-container');
         const navMenu = document.getElementById('nav-menu');
+        const playerContainer = document.getElementById('player-container');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const stopBtn = document.getElementById('stop-btn');
+
+        let currentAudio = null;
 
         function createSoundItem(sectionId, soundName, filePath) {
             const itemDiv = document.createElement('div');
@@ -153,11 +193,18 @@
             // Play/Pause functionality
             const audio = new Audio(filePath);
             button.onclick = () => {
+                if (currentAudio && currentAudio !== audio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                }
+                currentAudio = audio;
                 if (audio.paused) {
                     audio.play();
+                    playPauseBtn.textContent = 'Pause';
+                    playerContainer.style.display = 'block';
                 } else {
                     audio.pause();
-                    audio.currentTime = 0;
+                    playPauseBtn.textContent = 'Play';
                 }
             };
 
@@ -174,6 +221,29 @@
             itemDiv.appendChild(button);
             return itemDiv;
         }
+
+        // Play/Pause button functionality
+        playPauseBtn.onclick = () => {
+            if (currentAudio) {
+                if (currentAudio.paused) {
+                    currentAudio.play();
+                    playPauseBtn.textContent = 'Pause';
+                } else {
+                    currentAudio.pause();
+                    playPauseBtn.textContent = 'Play';
+                }
+            }
+        };
+
+        // Stop button functionality
+        stopBtn.onclick = () => {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                playPauseBtn.textContent = 'Play';
+                playerContainer.style.display = 'none';
+            }
+        };
 
         async function loadSoundsForSection(section) {
             const sectionId = `soundboard_${section.folder}`;
