@@ -185,7 +185,7 @@
             playerControls.appendChild(downloadButton);
 
             itemDiv.appendChild(playerControls);
-            document.getElementById(sectionId).appendChild(itemDiv);
+            return itemDiv;
         }
 
         async function loadSoundsForSection(section) {
@@ -206,7 +206,8 @@
                     data.forEach(file => {
                         if (file.name.toLowerCase().endsWith('.mp3')) {
                             const soundName = file.name.replace('.mp3', '').replace(/_/g, ' ');
-                            createSoundItem(sectionId, soundName, file.download_url);
+                            const soundItem = createSoundItem(sectionId, soundName, file.download_url);
+                            gridContainer.appendChild(soundItem);
                         }
                     });
                 } else {
