@@ -111,6 +111,7 @@
             display: flex;
             justify-content: center;
             gap: 10px;
+            align-items: center;
         }
         .player-controls button {
             background-color: #f07167;
@@ -122,6 +123,26 @@
         }
         .player-controls button:hover {
             background-color: #e0e0e0;
+        }
+        .progress-container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #555;
+            height: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+        }
+        .progress-bar {
+            background-color: #f07167;
+            height: 100%;
+            width: 0%;
+            border-radius: 5px;
+        }
+        .time-display {
+            color: #fff;
+            font-size: 14px;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -141,6 +162,10 @@
         <div class="player-controls">
             <button id="play-pause-btn">Play</button>
             <button id="stop-btn">Stop</button>
+            <div class="progress-container" id="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="time-display" id="time-display">00:00 / 00:00</div>
         </div>
     </div>
 
@@ -176,8 +201,25 @@
         const playerContainer = document.getElementById('player-container');
         const playPauseBtn = document.getElementById('play-pause-btn');
         const stopBtn = document.getElementById('stop-btn');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const timeDisplay = document.getElementById('time-display');
 
         let currentAudio = null;
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function updateProgress() {
+            if (currentAudio) {
+                const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                progressBar.style.width = `${progress}%`;
+                timeDisplay.textContent = `${formatTime(currentAudio.currentTime)} / ${formatTime(currentAudio.duration)}`;
+            }
+        }
 
         function createSoundItem(sectionId, soundName, filePath) {
             const itemDiv = document.createElement('div');
@@ -218,6 +260,9 @@
                 link.click();
             };
 
+            // Update progress bar and time display
+            audio.addEventListener('timeupdate', updateProgress);
+
             itemDiv.appendChild(button);
             return itemDiv;
         }
@@ -242,6 +287,17 @@
                 currentAudio.currentTime = 0;
                 playPauseBtn.textContent = 'Play';
                 playerContainer.style.display = 'none';
+            }
+        };
+
+        // Progress bar click functionality
+        progressContainer.onclick = (e) => {
+            if (currentAudio) {
+                const rect = progressContainer.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const width = rect.width;
+                const seekTime = (clickX / width) * currentAudio.duration;
+                currentAudio.currentTime = seekTime;
             }
         };
 
