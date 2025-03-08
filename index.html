@@ -68,38 +68,25 @@
             border-radius: 7px;
         }
         .sound-button {
-            font-size: large;
-            padding: 10px;
+            font-size: 14px; /* Reduced font size */
+            padding: 8px 12px; /* Reduced padding */
             background-color: #f07167;
             border: solid #d7af70;
             border-radius: 7px;
             cursor: pointer;
             width: 100%;
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         .sound-button:hover {
             background-color: #e0e0e0;
         }
-        .player-controls {
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-        .player-controls audio {
-            flex-grow: 1;
-            margin-right: 10px;
-        }
-        .download-button {
-            padding: 5px 10px;
-            background-color: #d7af70;
-            color: #0a0908;
-            border: none;
-            border-radius: 3px;
+        .download-icon {
+            margin-left: 8px;
+            font-size: 16px;
             cursor: pointer;
-            text-decoration: none;
-        }
-        .download-button:hover {
-            background-color: #c69f60;
         }
         .error-message {
             color: #721c24;
@@ -158,9 +145,14 @@
 
             const button = document.createElement('button');
             button.className = 'sound-button';
-            button.textContent = soundName;
+            button.innerHTML = `
+                <span>${soundName}</span>
+                <span class="download-icon" title="Download">&#x1F4E5;</span> <!-- Download icon -->
+            `;
+
+            // Play/Pause functionality
+            const audio = new Audio(filePath);
             button.onclick = () => {
-                const audio = itemDiv.querySelector('audio');
                 if (audio.paused) {
                     audio.play();
                 } else {
@@ -168,23 +160,18 @@
                     audio.currentTime = 0;
                 }
             };
+
+            // Download functionality
+            const downloadIcon = button.querySelector('.download-icon');
+            downloadIcon.onclick = (e) => {
+                e.stopPropagation(); // Prevent triggering the play/pause functionality
+                const link = document.createElement('a');
+                link.href = filePath;
+                link.download = soundName + '.mp3';
+                link.click();
+            };
+
             itemDiv.appendChild(button);
-
-            const playerControls = document.createElement('div');
-            playerControls.className = 'player-controls';
-            const audio = document.createElement('audio');
-            audio.controls = true;
-            audio.src = filePath;
-            playerControls.appendChild(audio);
-
-            const downloadButton = document.createElement('a');
-            downloadButton.className = 'download-button';
-            downloadButton.textContent = 'Download';
-            downloadButton.href = filePath;
-            downloadButton.download = soundName + '.mp3';
-            playerControls.appendChild(downloadButton);
-
-            itemDiv.appendChild(playerControls);
             return itemDiv;
         }
 
