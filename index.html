@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE DAN GHEESLING SHOW SOUNDBOARD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
             background-color: #383838;
@@ -128,7 +129,7 @@
             width: 80%;
             margin: 0 auto;
             background-color: #555;
-            height: 10px;
+            height: 30px;
             border-radius: 5px;
             cursor: pointer;
             position: relative;
@@ -176,7 +177,7 @@
             {name: "CELEBS", folder: "celebs"},
             {name: "COBALT", folder: "cobalt"},
             {name: "DAN", folder: "dan", note: "(the one rule of the sound board)"},
-            {name: "Dr. Ulden Wascht & Co", folder: "dr_u"},
+            {name: "Community songs", folder: "dr_u"},
             {name: "FLIGHT REACTS", folder: "flight_reacts", note: "(lower your volume before playing)"},
             {name: "GAMING", folder: "gaming"},
             {name: "HOB", folder: "hob"},
@@ -229,7 +230,7 @@
             button.className = 'sound-button';
             button.innerHTML = `
                 <span>${soundName}</span>
-                <span class="download-icon" title="Download">&#x1F4E5;</span> <!-- Download icon -->
+                <i class="fas fa-download download-icon" title="Download"></i> <!-- Font Awesome download icon -->
             `;
 
             // Play/Pause functionality
