@@ -27,6 +27,7 @@
             margin-top: 20px;
             background-color: #f07167;
             border: 3px solid #d7af70;
+            padding: 10px;
         }
         .nav-menu {
             display: flex;
@@ -67,10 +68,11 @@
             padding: 10px;
             background-color: #444;
             border-radius: 7px;
+            position: relative;
         }
         .sound-button {
-            font-size: 14px; /* Reduced font size */
-            padding: 8px 12px; /* Reduced padding */
+            font-size: 14px;
+            padding: 8px 12px;
             background-color: #f07167;
             border: solid #d7af70;
             border-radius: 7px;
@@ -80,14 +82,38 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            transition: all 0.3s;
         }
         .sound-button:hover {
             background-color: #e0e0e0;
+        }
+        .sound-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .sound-button.loading {
+            background-color: #ffc107;
+        }
+        .sound-button.playing {
+            background-color: #28a745;
         }
         .download-icon {
             margin-left: 8px;
             font-size: 16px;
             cursor: pointer;
+        }
+        .loading-spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #14110f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .error-message {
             color: #721c24;
@@ -145,6 +171,11 @@
             font-size: 14px;
             margin-top: 5px;
         }
+        .current-playing {
+            color: #fff;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -160,6 +191,7 @@
 
     <!-- Player container -->
     <div class="player-container" id="player-container">
+        <div class="current-playing" id="current-playing">Now Playing: </div>
         <div class="player-controls">
             <button id="play-pause-btn">Play</button>
             <button id="stop-btn">Stop</button>
@@ -205,8 +237,12 @@
         const progressContainer = document.getElementById('progress-container');
         const progressBar = document.getElementById('progress-bar');
         const timeDisplay = document.getElementById('time-display');
+        const currentPlayingDisplay = document.getElementById('current-playing');
 
         let currentAudio = null;
+        let currentButton = null;
+        let audioCache = new Map(); // Cache for loaded audio files
+        let loadingAudios = new Set(); // Track which audios are currently loading
 
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
@@ -222,6 +258,81 @@
             }
         }
 
+        function setButtonState(button, state) {
+            const spinner = button.querySelector('.loading-spinner');
+            const textSpan = button.querySelector('.button-text');
+            
+            button.classList.remove('loading', 'playing');
+            spinner.style.display = 'none';
+            
+            switch(state) {
+                case 'loading':
+                    button.classList.add('loading');
+                    button.disabled = true;
+                    spinner.style.display = 'inline-block';
+                    break;
+                case 'playing':
+                    button.classList.add('playing');
+                    button.disabled = false;
+                    break;
+                case 'normal':
+                    button.disabled = false;
+                    break;
+            }
+        }
+
+        async function loadAudioFile(url) {
+            if (audioCache.has(url)) {
+                return audioCache.get(url);
+            }
+
+            if (loadingAudios.has(url)) {
+                // Already loading, wait for it
+                return new Promise((resolve, reject) => {
+                    const checkInterval = setInterval(() => {
+                        if (audioCache.has(url)) {
+                            clearInterval(checkInterval);
+                            resolve(audioCache.get(url));
+                        } else if (!loadingAudios.has(url)) {
+                            clearInterval(checkInterval);
+                            reject(new Error('Loading failed'));
+                        }
+                    }, 100);
+                });
+            }
+
+            loadingAudios.add(url);
+            
+            try {
+                const audio = new Audio();
+                
+                return new Promise((resolve, reject) => {
+                    audio.oncanplaythrough = () => {
+                        audioCache.set(url, audio);
+                        loadingAudios.delete(url);
+                        resolve(audio);
+                    };
+                    
+                    audio.onerror = () => {
+                        loadingAudios.delete(url);
+                        reject(new Error('Failed to load audio'));
+                    };
+                    
+                    audio.ontimeout = () => {
+                        loadingAudios.delete(url);
+                        reject(new Error('Audio loading timeout'));
+                    };
+                    
+                    audio.src = url;
+                    audio.preload = 'auto';
+                    audio.load();
+                });
+            } catch (error) {
+                loadingAudios.delete(url);
+                throw error;
+            }
+        }
+
         function createSoundItem(sectionId, soundName, filePath) {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'sound-item';
@@ -229,40 +340,75 @@
             const button = document.createElement('button');
             button.className = 'sound-button';
             button.innerHTML = `
-                <span>${soundName}</span>
-                <i class="fas fa-download download-icon" title="Download"></i> <!-- Font Awesome download icon -->
+                <span class="button-text">${soundName}</span>
+                <div class="loading-spinner"></div>
+                <i class="fas fa-download download-icon" title="Download"></i>
             `;
 
-            // Play/Pause functionality
-            const audio = new Audio(filePath);
-            button.onclick = () => {
-                if (currentAudio && currentAudio !== audio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                }
-                currentAudio = audio;
-                if (audio.paused) {
-                    audio.play();
+            // Play/Pause functionality with lazy loading
+            button.onclick = async () => {
+                try {
+                    // Stop current audio if different
+                    if (currentAudio && currentButton !== button) {
+                        currentAudio.pause();
+                        currentAudio.currentTime = 0;
+                        if (currentButton) {
+                            setButtonState(currentButton, 'normal');
+                        }
+                    }
+
+                    // If this is the current audio, just toggle play/pause
+                    if (currentAudio && currentButton === button) {
+                        if (currentAudio.paused) {
+                            currentAudio.play();
+                            setButtonState(button, 'playing');
+                            playPauseBtn.textContent = 'Pause';
+                        } else {
+                            currentAudio.pause();
+                            setButtonState(button, 'normal');
+                            playPauseBtn.textContent = 'Play';
+                        }
+                        return;
+                    }
+
+                    // Load new audio
+                    setButtonState(button, 'loading');
+                    const audio = await loadAudioFile(filePath);
+                    
+                    currentAudio = audio;
+                    currentButton = button;
+                    
+                    // Set up event listeners for new audio
+                    audio.addEventListener('timeupdate', updateProgress);
+                    audio.addEventListener('ended', () => {
+                        setButtonState(button, 'normal');
+                        playPauseBtn.textContent = 'Play';
+                        playerContainer.style.display = 'none';
+                    });
+                    
+                    // Play the audio
+                    await audio.play();
+                    setButtonState(button, 'playing');
                     playPauseBtn.textContent = 'Pause';
                     playerContainer.style.display = 'block';
-                } else {
-                    audio.pause();
-                    playPauseBtn.textContent = 'Play';
+                    currentPlayingDisplay.textContent = `Now Playing: ${soundName}`;
+                    
+                } catch (error) {
+                    console.error('Error loading/playing audio:', error);
+                    setButtonState(button, 'normal');
+                    alert(`Failed to load audio: ${soundName}`);
                 }
             };
 
             // Download functionality
             const downloadIcon = button.querySelector('.download-icon');
             downloadIcon.onclick = (e) => {
-                e.stopPropagation(); // Prevent triggering the play/pause functionality
+                e.stopPropagation();
                 const link = document.createElement('a');
                 link.href = filePath;
                 link.download = soundName + '.mp3';
                 link.click();
             };
-
-            // Update progress bar and time display
-            audio.addEventListener('timeupdate', updateProgress);
 
             itemDiv.appendChild(button);
             return itemDiv;
@@ -270,12 +416,14 @@
 
         // Play/Pause button functionality
         playPauseBtn.onclick = () => {
-            if (currentAudio) {
+            if (currentAudio && currentButton) {
                 if (currentAudio.paused) {
                     currentAudio.play();
+                    setButtonState(currentButton, 'playing');
                     playPauseBtn.textContent = 'Pause';
                 } else {
                     currentAudio.pause();
+                    setButtonState(currentButton, 'normal');
                     playPauseBtn.textContent = 'Play';
                 }
             }
@@ -283,9 +431,10 @@
 
         // Stop button functionality
         stopBtn.onclick = () => {
-            if (currentAudio) {
+            if (currentAudio && currentButton) {
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
+                setButtonState(currentButton, 'normal');
                 playPauseBtn.textContent = 'Play';
                 playerContainer.style.display = 'none';
             }
