@@ -29,6 +29,33 @@
             border: 3px solid #d7af70;
             padding: 10px;
         }
+        .random-button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .random-button {
+            font-size: 18px;
+            padding: 15px 30px;
+            background-color: #90a955;
+            border: 3px solid #d7af70;
+            border-radius: 7px;
+            cursor: pointer;
+            color: #14110f;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .random-button:hover {
+            background-color: #7a9147;
+            transform: scale(1.05);
+        }
+        .random-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
         .nav-menu {
             display: flex;
             flex-wrap: wrap;
@@ -185,6 +212,14 @@
         <!-- Section links will be dynamically inserted here -->
     </nav>
 
+    <div class="random-button-container">
+        <button class="random-button" id="random-button">
+            <i class="fas fa-random"></i>
+            <span>Play Random</span>
+            <div class="loading-spinner"></div>
+        </button>
+    </div>
+
     <div id="soundboard-container">
         <!-- Soundboard sections will be dynamically inserted here -->
     </div>
@@ -239,11 +274,13 @@
         const progressBar = document.getElementById('progress-bar');
         const timeDisplay = document.getElementById('time-display');
         const currentPlayingDisplay = document.getElementById('current-playing');
+        const randomButton = document.getElementById('random-button');
 
         let currentAudio = null;
         let currentButton = null;
         let audioCache = new Map(); // Cache for loaded audio files
         let loadingAudios = new Set(); // Track which audios are currently loading
+        let allSounds = []; // Store all available sounds for random selection
 
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
@@ -264,13 +301,13 @@
             const textSpan = button.querySelector('.button-text');
             
             button.classList.remove('loading', 'playing');
-            spinner.style.display = 'none';
+            if (spinner) spinner.style.display = 'none';
             
             switch(state) {
                 case 'loading':
                     button.classList.add('loading');
                     button.disabled = true;
-                    spinner.style.display = 'inline-block';
+                    if (spinner) spinner.style.display = 'inline-block';
                     break;
                 case 'playing':
                     button.classList.add('playing');
@@ -334,6 +371,60 @@
             }
         }
 
+        async function playSound(soundName, filePath, button = null) {
+            try {
+                // Stop current audio if different
+                if (currentAudio && currentButton !== button) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                    if (currentButton) {
+                        setButtonState(currentButton, 'normal');
+                    }
+                }
+
+                // If this is the current audio, just toggle play/pause
+                if (currentAudio && currentButton === button && button) {
+                    if (currentAudio.paused) {
+                        currentAudio.play();
+                        setButtonState(button, 'playing');
+                        playPauseBtn.textContent = 'Pause';
+                    } else {
+                        currentAudio.pause();
+                        setButtonState(button, 'normal');
+                        playPauseBtn.textContent = 'Play';
+                    }
+                    return;
+                }
+
+                // Load new audio
+                if (button) setButtonState(button, 'loading');
+                const audio = await loadAudioFile(filePath);
+                
+                currentAudio = audio;
+                currentButton = button;
+                
+                // Set up event listeners for new audio
+                audio.addEventListener('timeupdate', updateProgress);
+                audio.addEventListener('ended', () => {
+                    if (button) setButtonState(button, 'normal');
+                    playPauseBtn.textContent = 'Play';
+                    playerContainer.style.display = 'none';
+                });
+                
+                // Play the audio
+                await audio.play();
+                if (button) setButtonState(button, 'playing');
+                playPauseBtn.textContent = 'Pause';
+                playerContainer.style.display = 'block';
+                currentPlayingDisplay.textContent = `Now Playing: ${soundName}`;
+                
+            } catch (error) {
+                console.error('Error loading/playing audio:', error);
+                if (button) setButtonState(button, 'normal');
+                alert(`Failed to load audio: ${soundName}`);
+            }
+        }
+
         function createSoundItem(sectionId, soundName, filePath) {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'sound-item';
@@ -348,57 +439,7 @@
 
             // Play/Pause functionality with lazy loading
             button.onclick = async () => {
-                try {
-                    // Stop current audio if different
-                    if (currentAudio && currentButton !== button) {
-                        currentAudio.pause();
-                        currentAudio.currentTime = 0;
-                        if (currentButton) {
-                            setButtonState(currentButton, 'normal');
-                        }
-                    }
-
-                    // If this is the current audio, just toggle play/pause
-                    if (currentAudio && currentButton === button) {
-                        if (currentAudio.paused) {
-                            currentAudio.play();
-                            setButtonState(button, 'playing');
-                            playPauseBtn.textContent = 'Pause';
-                        } else {
-                            currentAudio.pause();
-                            setButtonState(button, 'normal');
-                            playPauseBtn.textContent = 'Play';
-                        }
-                        return;
-                    }
-
-                    // Load new audio
-                    setButtonState(button, 'loading');
-                    const audio = await loadAudioFile(filePath);
-                    
-                    currentAudio = audio;
-                    currentButton = button;
-                    
-                    // Set up event listeners for new audio
-                    audio.addEventListener('timeupdate', updateProgress);
-                    audio.addEventListener('ended', () => {
-                        setButtonState(button, 'normal');
-                        playPauseBtn.textContent = 'Play';
-                        playerContainer.style.display = 'none';
-                    });
-                    
-                    // Play the audio
-                    await audio.play();
-                    setButtonState(button, 'playing');
-                    playPauseBtn.textContent = 'Pause';
-                    playerContainer.style.display = 'block';
-                    currentPlayingDisplay.textContent = `Now Playing: ${soundName}`;
-                    
-                } catch (error) {
-                    console.error('Error loading/playing audio:', error);
-                    setButtonState(button, 'normal');
-                    alert(`Failed to load audio: ${soundName}`);
-                }
+                await playSound(soundName, filePath, button);
             };
 
             // Download functionality
@@ -414,6 +455,17 @@
             itemDiv.appendChild(button);
             return itemDiv;
         }
+
+        // Random button functionality
+        randomButton.onclick = async () => {
+            if (allSounds.length === 0) {
+                alert('No sounds loaded yet! Please wait for the soundboard to finish loading.');
+                return;
+            }
+
+            const randomSound = allSounds[Math.floor(Math.random() * allSounds.length)];
+            await playSound(randomSound.name, randomSound.url);
+        };
 
         // Play/Pause button functionality
         playPauseBtn.onclick = () => {
@@ -472,6 +524,13 @@
                             const soundName = file.name.replace('.mp3', '').replace(/_/g, ' ');
                             const soundItem = createSoundItem(sectionId, soundName, file.download_url);
                             gridContainer.appendChild(soundItem);
+                            
+                            // Add to allSounds array for random functionality
+                            allSounds.push({
+                                name: soundName,
+                                url: file.download_url,
+                                section: section.name
+                            });
                         }
                     });
                 } else {
