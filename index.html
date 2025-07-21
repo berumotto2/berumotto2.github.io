@@ -178,6 +178,10 @@
         .player-controls button:hover {
             background-color: #e0e0e0;
         }
+        .player-controls button.active {
+            background-color: #90a955;
+            color: white;
+        }
         .progress-container {
             width: 80%;
             margin: 0 auto;
@@ -230,6 +234,9 @@
         <div class="player-controls">
             <button id="play-pause-btn">Play</button>
             <button id="stop-btn">Stop</button>
+            <button id="loop-btn" title="Toggle Loop">
+                <i class="fas fa-redo"></i>
+            </button>
             <div class="progress-container" id="progress-container">
                 <div class="progress-bar" id="progress-bar"></div>
             </div>
@@ -275,12 +282,14 @@
         const timeDisplay = document.getElementById('time-display');
         const currentPlayingDisplay = document.getElementById('current-playing');
         const randomButton = document.getElementById('random-button');
+        const loopBtn = document.getElementById('loop-btn');
 
         let currentAudio = null;
         let currentButton = null;
         let audioCache = new Map(); // Cache for loaded audio files
         let loadingAudios = new Set(); // Track which audios are currently loading
         let allSounds = []; // Store all available sounds for random selection
+        let isLooping = false; // Track loop state
 
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
@@ -406,9 +415,14 @@
                 // Set up event listeners for new audio
                 audio.addEventListener('timeupdate', updateProgress);
                 audio.addEventListener('ended', () => {
-                    if (button) setButtonState(button, 'normal');
-                    playPauseBtn.textContent = 'Play';
-                    playerContainer.style.display = 'none';
+                    if (isLooping) {
+                        audio.currentTime = 0;
+                        audio.play();
+                    } else {
+                        if (button) setButtonState(button, 'normal');
+                        playPauseBtn.textContent = 'Play';
+                        playerContainer.style.display = 'none';
+                    }
                 });
                 
                 // Play the audio
@@ -490,6 +504,18 @@
                 setButtonState(currentButton, 'normal');
                 playPauseBtn.textContent = 'Play';
                 playerContainer.style.display = 'none';
+            }
+        };
+
+        // Loop button functionality
+        loopBtn.onclick = () => {
+            isLooping = !isLooping;
+            if (isLooping) {
+                loopBtn.classList.add('active');
+                loopBtn.title = 'Loop Enabled - Click to Disable';
+            } else {
+                loopBtn.classList.remove('active');
+                loopBtn.title = 'Loop Disabled - Click to Enable';
             }
         };
 
